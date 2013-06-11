@@ -2,28 +2,45 @@
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/stream"
+        android:focusable="true">
 
     <ListView
-            android:layout_width="wrap_content"
-            android:layout_height="517dp"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:id="@+id/listView"
-            android:layout_gravity="left|center_vertical"/>
+            android:layout_gravity="left|center_vertical"
+            android:layout_weight="1"/>
 
     <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="49dp"
             android:layout_gravity="center"
-            android:background="#000000">
+            android:background="#111111"
+            android:id="@+id/action_bar">
+
+        <SurfaceView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/preview"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="false"
+                android:layout_alignParentLeft="false"
+                android:layout_alignParentBottom="false"
+                android:visibility="invisible"/>
 
         <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="∇"
-                android:id="@+id/button"
-                android:layout_alignParentTop="true"
+                android:id="@+id/enter_the_void"
+                android:layout_alignParentTop="false"
                 android:layout_centerHorizontal="true"
-                />
+                android:layout_alignParentBottom="true"
+                android:focusableInTouchMode="false"
+                android:layout_alignParentStart="false"/>
+
     </RelativeLayout>
 
 </LinearLayout>
