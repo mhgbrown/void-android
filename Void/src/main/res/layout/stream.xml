@@ -20,6 +20,16 @@
             android:background="#111111"
             android:id="@+id/action_bar">
 
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="x"
+                android:id="@+id/stop_action"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentEnd="false"
+                android:visibility="invisible"/>
+
         <SurfaceView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -28,7 +38,27 @@
                 android:layout_alignParentRight="false"
                 android:layout_alignParentLeft="false"
                 android:layout_alignParentBottom="false"
-                android:visibility="invisible"/>
+                android:visibility="invisible"
+                android:layout_alignParentEnd="false"
+                android:layout_marginTop="50dp"/>
+
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="✔"
+                android:id="@+id/post"
+                android:visibility="invisible"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"/>
+
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="C"
+                android:id="@+id/take_picture"
+                android:visibility="invisible"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"/>
 
         <Button
                 android:layout_width="wrap_content"

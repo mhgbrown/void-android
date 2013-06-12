@@ -16,10 +16,9 @@ public class Animator {
         return (int) (dps * scale + 0.5f);
     }
 
-    public static void expand(final View v, int targetHeight) {
+    public static Animation expand(final View v, int targetHeight) {
         final int startHeight = v.getHeight();
         final int endHeight = targetHeight - startHeight;
-        Log.d("-- VOID --", startHeight + "=>" + targetHeight);
 
         v.setVisibility(View.VISIBLE);
         Animation a = new Animation()
@@ -42,9 +41,10 @@ public class Animator {
         // 1dp/ms
         a.setDuration((int)(targetHeight / v.getContext().getResources().getDisplayMetrics().density));
         v.startAnimation(a);
+        return a;
     }
 
-    public static void collapse(final View v, int targetHeight) {
+    public static Animation collapse(final View v, int targetHeight) {
         final int endHeight = targetHeight;
         final int initialHeight = v.getMeasuredHeight() - targetHeight;
 
@@ -65,5 +65,6 @@ public class Animator {
         // 1dp/ms
         a.setDuration((int)(initialHeight / v.getContext().getResources().getDisplayMetrics().density));
         v.startAnimation(a);
+        return a;
     }
 }
