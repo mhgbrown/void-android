@@ -3,16 +3,20 @@ package io.morgan.Void;
 import android.hardware.Camera;
 import android.hardware.Camera.ShutterCallback;
 import android.hardware.Camera.PictureCallback;
+import android.location.Location;
 import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
+import android.view.FocusFinder;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class Stream extends Activity {
@@ -30,11 +34,14 @@ public class Stream extends Activity {
     SurfaceView preview;
     SurfaceHolder previewHolder;
     Camera camera;
+    TextView locationDisplay;
 
     Button enterTheVoid;
     Button takePicture;
     Button post;
     Button stopAction;
+
+    Locator locator;
 
     boolean cameraConfigured = false;
 
@@ -46,6 +53,7 @@ public class Stream extends Activity {
         stream = (LinearLayout) findViewById(R.id.stream);
         actionBar = (RelativeLayout) findViewById(R.id.action_bar);
         preview = (SurfaceView) findViewById(R.id.preview);
+        locationDisplay = (TextView) findViewById(R.id.location_display);
 
         previewHolder = preview.getHolder();
         previewHolder.addCallback(surfaceCallback);
@@ -55,6 +63,8 @@ public class Stream extends Activity {
         takePicture = (Button) findViewById(R.id.take_picture);
         post = (Button) findViewById(R.id.post);
         stopAction = (Button) findViewById(R.id.stop_action);
+
+        locator = new Locator();
 
         // attach main action handlers
         enterTheVoid.setOnClickListener(new View.OnClickListener() {
@@ -71,16 +81,23 @@ public class Stream extends Activity {
 
                     @Override
                     public void onAnimationEnd(Animation arg0) {
-                        Log.d("ITS DONE", "ITS DONE");
                         stopAction.setVisibility(View.VISIBLE);
                         preview.setVisibility(View.VISIBLE);
                         enterTheVoid.setVisibility(View.INVISIBLE);
                         takePicture.setVisibility(View.VISIBLE);
+                        locationDisplay.setVisibility(View.VISIBLE);
                         preview.getLayoutParams().height = preview.getWidth();
+                        // move the location display down
+                        RelativeLayout.LayoutParams locationDisplayLayout = (RelativeLayout.LayoutParams)locationDisplay.getLayoutParams();
+//                        Toast.makeText(Stream.this,"something", Toast.LENGTH_LONG).show();
+                        locationDisplayLayout.setMargins(Animator.dpsToPixels(actionBar, 5), preview.getLayoutParams().height + ((ViewGroup.MarginLayoutParams) preview.getLayoutParams()).topMargin , 0, 0);
+                        locationDisplay.setLayoutParams(locationDisplayLayout);
                         camera = Camera.open();
-                        // ONLY do this after the first
+                        // this is weird and im not sure about it
                         initPreview(preview.getWidth(), preview.getLayoutParams().height);
                         startPreview();
+
+                        locator.getLocation(Stream.this, locatorListener);
                     }
                 });
             }
@@ -142,6 +159,7 @@ public class Stream extends Activity {
                         takePicture.setVisibility(View.INVISIBLE);
                         preview.setVisibility(View.INVISIBLE);
                         enterTheVoid.setVisibility(View.VISIBLE);
+                        locationDisplay.setVisibility(View.INVISIBLE);
                         camera.stopPreview();
                         camera.release();
                         camera = null;
@@ -199,6 +217,7 @@ public class Stream extends Activity {
                     Log.d("THIS", "GOT CALLED");
                     parameters.setPreviewSize(size.width, size.height);
                     camera.setParameters(parameters);
+                    camera.setDisplayOrientation(90);
                     cameraConfigured = true;
                 }
             }
@@ -220,12 +239,11 @@ public class Stream extends Activity {
         }
 
         public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-//            initPreview(width, height);
-//            startPreview();
+            initPreview(width, height);
+            startPreview();
         }
 
         public void surfaceDestroyed(SurfaceHolder holder) {
-            Log.d("DESTROYED", "DESTROYED");
             // no-op
         }
     };
@@ -245,6 +263,17 @@ public class Stream extends Activity {
     PictureCallback jpegCallback = new PictureCallback() {
         public void onPictureTaken(byte[] _data, Camera _camera) {
             // TODO Do something with the image JPEG data.
+        }
+    };
+
+    Locator.LocatorListener locatorListener = new Locator.LocatorListener() {
+        @Override
+        public void onLocationFound(Location location) {
+            String cityAndCountry = Locator.getLocalityAndCountry(Stream.this, location);
+
+            if(cityAndCountry != null) {
+                locationDisplay.setText(cityAndCountry);
+            }
         }
     };
 }
