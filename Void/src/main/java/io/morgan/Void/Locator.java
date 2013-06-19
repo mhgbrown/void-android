@@ -144,6 +144,10 @@ public class Locator {
         Geocoder geocoder = new Geocoder(context, Locale.getDefault());
         List<Address> addresses;
 
+        if(location == null) {
+            return result;
+        }
+
         try {
             addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
             if (addresses.size() > 0) {

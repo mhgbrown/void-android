@@ -1,5 +1,6 @@
 package io.morgan.Void;
 
+import android.graphics.ImageFormat;
 import android.hardware.Camera;
 import android.hardware.Camera.ShutterCallback;
 import android.hardware.Camera.PictureCallback;
@@ -7,7 +8,6 @@ import android.location.Location;
 import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
-import android.view.FocusFinder;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -38,10 +38,11 @@ public class Stream extends Activity {
 
     Button enterTheVoid;
     Button takePicture;
-    Button post;
+    Button postButton;
     Button stopAction;
 
     Locator locator;
+    Post post = null;
 
     boolean cameraConfigured = false;
 
@@ -61,7 +62,7 @@ public class Stream extends Activity {
 
         enterTheVoid = (Button) findViewById(R.id.enter_the_void);
         takePicture = (Button) findViewById(R.id.take_picture);
-        post = (Button) findViewById(R.id.post);
+        postButton = (Button) findViewById(R.id.post);
         stopAction = (Button) findViewById(R.id.stop_action);
 
         locator = new Locator();
@@ -81,6 +82,7 @@ public class Stream extends Activity {
 
                     @Override
                     public void onAnimationEnd(Animation arg0) {
+                        post = new Post();
                         stopAction.setVisibility(View.VISIBLE);
                         preview.setVisibility(View.VISIBLE);
                         enterTheVoid.setVisibility(View.INVISIBLE);
@@ -108,37 +110,48 @@ public class Stream extends Activity {
             @Override
             public void onClick(View v) {
                 camera.takePicture(shutterCallback, rawCallback, jpegCallback);
-                // take the picture
-                // freeze the preview
-                // set the location?
-                // display the location under the photo
                 takePicture.setVisibility(View.INVISIBLE);
-                post.setVisibility(View.VISIBLE);
+                postButton.setVisibility(View.VISIBLE);
                 state = K_STATE_FROZEN;
             }
         });
 
-        post.setOnClickListener(new View.OnClickListener(){
+        postButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                // disable this button
-                // start the upload
-                // show and update the progress bar accordingly
-                // teardown preview and camera
-                // enable the void button
-                // hide and enable this button
-                // collapse
+                // disable every button
+                stopAction.setVisibility(View.INVISIBLE);
+                takePicture.setVisibility(View.INVISIBLE);
+                postButton.setVisibility(View.INVISIBLE);
+                post.save(new Post.Callback(){
 
-//                preview.setVisibility(View.INVISIBLE);
-//                if (inPreview) {
-//                    camera.stopPreview();
-//                }
-//                camera.release();
-//                camera = null;
-//                inPreview = false;
-//                Animator.collapse(actionBar, originalHeight);
-//                voidOpen = false;
+                    @Override
+                    public void onSuccess() {
+                        stopAction.setVisibility(View.INVISIBLE);
+                        takePicture.setVisibility(View.INVISIBLE);
+                        preview.setVisibility(View.INVISIBLE);
+                        enterTheVoid.setVisibility(View.VISIBLE);
+                        locationDisplay.setVisibility(View.INVISIBLE);
+                        camera.stopPreview();
+                        camera.release();
+                        camera = null;
+                        cameraConfigured = false;
+                        Animator.collapse(actionBar, originalHeight);
+                        state = K_STATE_STREAM;
+                        post = null;
+                    }
+
+                    @Override
+                    public void onError() {
+                        Toast.makeText(Stream.this, "Void failed to save your post. Please try again.", Toast.LENGTH_LONG).show();
+                        startPreview();
+                        stopAction.setVisibility(View.VISIBLE);
+                        takePicture.setVisibility(View.VISIBLE);
+                        postButton.setVisibility(View.INVISIBLE);
+                        state = K_STATE_PREVIEW;
+                    }
+                });
             }
         });
 
@@ -151,7 +164,7 @@ public class Stream extends Activity {
                     case K_STATE_FROZEN:
                         startPreview();
                         takePicture.setVisibility(View.VISIBLE);
-                        post.setVisibility(View.INVISIBLE);
+                        postButton.setVisibility(View.INVISIBLE);
                         state = K_STATE_PREVIEW;
                         break;
                     case K_STATE_PREVIEW:
@@ -166,6 +179,7 @@ public class Stream extends Activity {
                         cameraConfigured = false;
                         Animator.collapse(actionBar, originalHeight);
                         state = K_STATE_STREAM;
+                        post = null;
                         break;
                 }
             }
@@ -206,15 +220,13 @@ public class Stream extends Activity {
             }
 
             if (!cameraConfigured) {
-                Log.d("SIZE", "=> " + width + ", " + height);
                 Camera.Parameters parameters = camera.getParameters();
                 Camera.Size size = getBestPreviewSize(width, height, parameters);
 
                 // set a camera format
-                // parameters.setPictureFormat(PixelFormat.JPEG);
+                parameters.setPictureFormat(ImageFormat.JPEG);
 
                 if (size != null) {
-                    Log.d("THIS", "GOT CALLED");
                     parameters.setPreviewSize(size.width, size.height);
                     camera.setParameters(parameters);
                     camera.setDisplayOrientation(90);
@@ -250,19 +262,17 @@ public class Stream extends Activity {
 
     ShutterCallback shutterCallback = new ShutterCallback() {
         public void onShutter() {
-            // TODO Do something when the shutter closes.
         }
     };
 
     PictureCallback rawCallback = new PictureCallback() {
-        public void onPictureTaken(byte[] _data, Camera _camera) {
-            // TODO Do something with the image RAW data.
+        public void onPictureTaken(byte[] data, Camera camera) {
         }
     };
 
     PictureCallback jpegCallback = new PictureCallback() {
-        public void onPictureTaken(byte[] _data, Camera _camera) {
-            // TODO Do something with the image JPEG data.
+        public void onPictureTaken(byte[] data, Camera camera) {
+            post.setImage(data);
         }
     };
 
@@ -273,6 +283,7 @@ public class Stream extends Activity {
 
             if(cityAndCountry != null) {
                 locationDisplay.setText(cityAndCountry);
+                post.setLocation(cityAndCountry);
             }
         }
     };
