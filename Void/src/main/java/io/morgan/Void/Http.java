@@ -61,6 +61,7 @@ public class Http {
             protected void onPostExecute(HttpResponse response) {
                 if(response == null) {
                     callback.onError(new Exception("Response is null"));
+                    return;
                 }
 
                 if(response.getStatusLine().getStatusCode() < 200 || response.getStatusLine().getStatusCode() >= 300) {

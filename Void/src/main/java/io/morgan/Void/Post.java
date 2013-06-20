@@ -16,8 +16,7 @@ import java.util.ArrayList;
  * Created by mobrown on 6/17/13.
  */
 public class Post {
-//    public final String ENDPOINT = "http://void.67.218.102.218.xip.io/posts";
-    public final String ENDPOINT = "http://void.192.168.1.2.xip.io/posts";
+    public final String ENDPOINT = "http://void-server.herokuapp.com/posts";
     public final String LOCATION_NAME = "post[location]";
     public final String IMAGE_NAME = "post[image]";
 
