@@ -25,6 +25,8 @@ public class Stream extends Activity {
     final int K_STATE_PREVIEW = 1;
     final int K_STATE_FROZEN = 2;
 
+    final String DEFAULT_LOCATION = "Somwhere";
+
     int state = K_STATE_STREAM;
     int originalHeight;
 
@@ -110,9 +112,7 @@ public class Stream extends Activity {
             @Override
             public void onClick(View v) {
                 camera.takePicture(shutterCallback, rawCallback, jpegCallback);
-                takePicture.setVisibility(View.INVISIBLE);
-                postButton.setVisibility(View.VISIBLE);
-                state = K_STATE_FROZEN;
+                // change visibility in shutter callback
             }
         });
 
@@ -140,11 +140,12 @@ public class Stream extends Activity {
                         Animator.collapse(actionBar, originalHeight);
                         state = K_STATE_STREAM;
                         post = null;
+                        locationDisplay.setText(DEFAULT_LOCATION);
                     }
 
                     @Override
                     public void onError() {
-                        Toast.makeText(Stream.this, "Void failed to save your post. Please try again.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(Stream.this, "Sorry, please try again.", Toast.LENGTH_LONG).show();
                         startPreview();
                         stopAction.setVisibility(View.VISIBLE);
                         takePicture.setVisibility(View.VISIBLE);
@@ -180,6 +181,7 @@ public class Stream extends Activity {
                         Animator.collapse(actionBar, originalHeight);
                         state = K_STATE_STREAM;
                         post = null;
+                        locationDisplay.setText(DEFAULT_LOCATION);
                         break;
                 }
             }
@@ -225,6 +227,7 @@ public class Stream extends Activity {
 
                 // set a camera format
                 parameters.setPictureFormat(ImageFormat.JPEG);
+                parameters.setRotation(90);
 
                 if (size != null) {
                     parameters.setPreviewSize(size.width, size.height);
@@ -238,7 +241,6 @@ public class Stream extends Activity {
 
     private void startPreview() {
         if (cameraConfigured && camera != null) {
-            Log.d("PREVIEW", "START");
             camera.startPreview();
             state = K_STATE_PREVIEW;
         }
@@ -262,6 +264,9 @@ public class Stream extends Activity {
 
     ShutterCallback shutterCallback = new ShutterCallback() {
         public void onShutter() {
+            takePicture.setVisibility(View.INVISIBLE);
+            postButton.setVisibility(View.VISIBLE);
+            state = K_STATE_FROZEN;
         }
     };
 

@@ -45,13 +45,15 @@
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Somewhere"
                 android:id="@+id/location_display"
                 android:textColor="#CC0071"
                 android:textIsSelectable="false"
                 android:textStyle="bold"
-                android:visibility="invisible"/>
+                android:visibility="invisible"
+                android:fontFamily="sans-serif-condensed"
+                android:enabled="true"/>
 
         <Button
                 android:layout_width="wrap_content"
