@@ -82,7 +82,7 @@
 
         <Button
                 android:layout_width="80dp"
-                android:layout_height="50dp"
+                android:layout_height="49dp"
                 android:text="▽"
                 android:id="@+id/enter_the_void"
                 android:layout_alignParentTop="false"

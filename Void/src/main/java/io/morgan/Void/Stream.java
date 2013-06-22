@@ -1,5 +1,6 @@
 package io.morgan.Void;
 
+import android.graphics.Bitmap;
 import android.graphics.ImageFormat;
 import android.hardware.Camera;
 import android.hardware.Camera.ShutterCallback;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -128,7 +130,6 @@ public class Stream extends Activity {
 
                     @Override
                     public void onSuccess(Post p) {
-                        Toast.makeText(Stream.this, p.imageUrl, Toast.LENGTH_LONG).show();
                         stopAction.setVisibility(View.INVISIBLE);
                         takePicture.setVisibility(View.INVISIBLE);
                         preview.setVisibility(View.INVISIBLE);
@@ -142,6 +143,20 @@ public class Stream extends Activity {
                         state = K_STATE_STREAM;
                         post = null;
                         locationDisplay.setText(DEFAULT_LOCATION);
+
+                        Media.getImage(p.imageUrl, new Media.ImageCallback() {
+                            @Override
+                            public void onSuccess(Bitmap image) {
+                                Toast.makeText(Stream.this, "image received", Toast.LENGTH_LONG).show();
+//                                ImageView img = (ImageView) findViewById(R.id.imageView1);
+//                                img.setImageBitmap(image);
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+
+                            }
+                        });
                     }
 
                     @Override
