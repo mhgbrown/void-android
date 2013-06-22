@@ -5,6 +5,8 @@ import android.util.Log;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -20,25 +22,14 @@ public class Post {
     public final String LOCATION_NAME = "post[location]";
     public final String IMAGE_NAME = "post[image]";
 
-    private String location = "Somewhere";
-    private byte[] image = new byte[1];
+    public int id = -1;
+    public String imageUrl = null;
+    public String location = "Somewhere";
+    public byte[] image = new byte[1];
 
     public Post() {
         this.location = "Somewhere";
         this.image = new byte[1];
-    }
-
-    public Post(String location, byte[] image) {
-        this.location = location;
-        this.image = image;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public void setImage(byte[] image) {
-        this.image = image;
     }
 
     private String saveImage() {
@@ -69,22 +60,46 @@ public class Post {
         nameValuePairs.add(imageData);
         Http.post(ENDPOINT, nameValuePairs, new Http.Callback() {
             @Override
-            public void onSuccess(HttpResponse httpResponse) {
-                callback.onSuccess();
+            public void onSuccess(HttpResponse response) {
+                Post p = null;
+
+                try {
+                    p = Post.fromJSON(Http.getContentString(response));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    callback.onError(e);
+                }
+
+                callback.onSuccess(p);
             }
 
             @Override
             public void onError(Exception e) {
-                callback.onError();
+                callback.onError(e);
             }
         });
         return true;
     }
 
+    public static Post fromJSON(String json) {
+        Post post = new Post();
+
+        try {
+            JSONObject postJson = new JSONObject(json);
+            post.id = postJson.getInt("id");
+            post.imageUrl = postJson.getString("image_url");
+            post.location = postJson.getString("location");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return post;
+    }
+
     public static abstract class Callback {
 
-        public abstract void onSuccess();
+        public abstract void onSuccess(Post post);
 
-        public abstract void onError();
+        public abstract void onError(Exception e);
     }
 }

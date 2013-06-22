@@ -3,6 +3,7 @@ package io.morgan.Void;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -15,8 +16,12 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 /**
@@ -75,6 +80,25 @@ public class Http {
         };
 
         post.execute();
+    }
+
+    public static String getContentString(HttpResponse response) throws IOException {
+        HttpEntity entity;
+        InputStream inputStream;
+        String result;
+
+        entity = response.getEntity();
+        inputStream = entity.getContent();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+        StringBuilder sb = new StringBuilder();
+
+        String line = null;
+        while ((line = reader.readLine()) != null) {
+            sb.append(line + "\n");
+        }
+        result = sb.toString();
+
+        return result;
     }
 
     public static abstract class Callback {

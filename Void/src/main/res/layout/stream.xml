@@ -21,14 +21,17 @@
             android:id="@+id/action_bar">
 
         <Button
-                android:layout_width="wrap_content"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:text="x"
                 android:id="@+id/stop_action"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentEnd="false"
-                android:visibility="invisible"/>
+                android:visibility="invisible"
+                android:textStyle="bold"
+                android:singleLine="true"
+                android:layout_marginTop="3dp"/>
 
         <SurfaceView
                 android:layout_width="fill_parent"
@@ -56,33 +59,41 @@
                 android:enabled="true"/>
 
         <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="80dp"
+                android:layout_height="50dp"
                 android:text="✔"
                 android:id="@+id/post"
                 android:visibility="invisible"
                 android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"/>
+                android:layout_centerHorizontal="true"
+                android:textStyle="bold"
+                android:singleLine="true"/>
 
         <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="C"
+                android:layout_width="80dp"
+                android:layout_height="50dp"
+                android:text="◎"
                 android:id="@+id/take_picture"
                 android:visibility="invisible"
                 android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"/>
+                android:layout_centerHorizontal="true"
+                android:singleLine="true"
+                android:textStyle="bold"/>
 
         <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="∇"
+                android:layout_width="80dp"
+                android:layout_height="50dp"
+                android:text="▽"
                 android:id="@+id/enter_the_void"
                 android:layout_alignParentTop="false"
                 android:layout_centerHorizontal="true"
                 android:layout_alignParentBottom="true"
                 android:focusableInTouchMode="false"
-                android:layout_alignParentStart="false"/>
+                android:layout_alignParentStart="false"
+                android:textStyle="bold"
+                android:singleLine="true"
+                android:visibility="visible"
+                />
 
     </RelativeLayout>
 

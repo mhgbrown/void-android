@@ -127,7 +127,8 @@ public class Stream extends Activity {
                 post.save(new Post.Callback(){
 
                     @Override
-                    public void onSuccess() {
+                    public void onSuccess(Post p) {
+                        Toast.makeText(Stream.this, p.imageUrl, Toast.LENGTH_LONG).show();
                         stopAction.setVisibility(View.INVISIBLE);
                         takePicture.setVisibility(View.INVISIBLE);
                         preview.setVisibility(View.INVISIBLE);
@@ -144,7 +145,7 @@ public class Stream extends Activity {
                     }
 
                     @Override
-                    public void onError() {
+                    public void onError(Exception e) {
                         Toast.makeText(Stream.this, "Sorry, please try again.", Toast.LENGTH_LONG).show();
                         startPreview();
                         stopAction.setVisibility(View.VISIBLE);
@@ -277,7 +278,7 @@ public class Stream extends Activity {
 
     PictureCallback jpegCallback = new PictureCallback() {
         public void onPictureTaken(byte[] data, Camera camera) {
-            post.setImage(data);
+            post.image = data;
         }
     };
 
@@ -288,7 +289,7 @@ public class Stream extends Activity {
 
             if(cityAndCountry != null) {
                 locationDisplay.setText(cityAndCountry);
-                post.setLocation(cityAndCountry);
+                post.location = cityAndCountry;
             }
         }
     };
