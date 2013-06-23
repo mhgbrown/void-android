@@ -15,7 +15,7 @@
 
     <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="49dp"
+            android:layout_height="50dp"
             android:layout_gravity="center"
             android:background="#111111"
             android:id="@+id/action_bar">
@@ -23,7 +23,7 @@
         <Button
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
-                android:text="x"
+                android:text="✕"
                 android:id="@+id/stop_action"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"

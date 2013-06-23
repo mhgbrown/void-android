@@ -21,6 +21,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.http.NameValuePair;
+
 import java.util.ArrayList;
 
 public class Stream extends Activity {
@@ -29,11 +31,12 @@ public class Stream extends Activity {
     final int K_STATE_PREVIEW = 1;
     final int K_STATE_FROZEN = 2;
 
-    final String DEFAULT_LOCATION = "Somwhere";
+    final String DEFAULT_LOCATION = "Somewhere";
 
     int state = K_STATE_STREAM;
     int originalHeight;
     ArrayList<Post> posts = new ArrayList<Post>();
+    boolean cameraConfigured = false;
 
     RelativeLayout actionBar;
     LinearLayout stream;
@@ -51,8 +54,7 @@ public class Stream extends Activity {
 
     Locator locator;
     Post post = null;
-
-    boolean cameraConfigured = false;
+    User user = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +77,7 @@ public class Stream extends Activity {
         stopAction = (Button) findViewById(R.id.stop_action);
 
         locator = new Locator();
+        user = new User(Identity.id(this));
 
         // attach main action handlers
         enterTheVoid.setOnClickListener(new View.OnClickListener() {
@@ -100,8 +103,7 @@ public class Stream extends Activity {
                         preview.getLayoutParams().height = preview.getWidth();
                         // move the location display down
                         RelativeLayout.LayoutParams locationDisplayLayout = (RelativeLayout.LayoutParams)locationDisplay.getLayoutParams();
-//                        Toast.makeText(Stream.this,"something", Toast.LENGTH_LONG).show();
-                        locationDisplayLayout.setMargins(Animator.dpsToPixels(actionBar, 5), preview.getLayoutParams().height + ((ViewGroup.MarginLayoutParams) preview.getLayoutParams()).topMargin , 0, 0);
+                        locationDisplayLayout.setMargins(Animator.dpsToPixels(actionBar, 5), preview.getLayoutParams().height + ((ViewGroup.MarginLayoutParams) preview.getLayoutParams()).topMargin + Animator.dpsToPixels(actionBar, 5), 0, 0);
                         locationDisplay.setLayoutParams(locationDisplayLayout);
                         camera = Camera.open();
                         // this is weird and im not sure about it
@@ -132,6 +134,11 @@ public class Stream extends Activity {
                 takePicture.setVisibility(View.INVISIBLE);
                 postButton.setVisibility(View.INVISIBLE);
                 post.save(new Post.Callback(){
+
+                    @Override
+                    public void onBeforeSend(ArrayList<NameValuePair> nameValuePairs) {
+                        Toast.makeText(Stream.this, "before sending!", Toast.LENGTH_LONG).show();
+                    }
 
                     @Override
                     public void onSuccess(final Post p) {

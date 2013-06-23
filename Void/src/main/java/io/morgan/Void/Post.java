@@ -55,12 +55,9 @@ public class Post {
     }
 
     public boolean save(final Callback callback) {
-        String imagePath = saveImage();
-        BasicNameValuePair locationData = new BasicNameValuePair(LOCATION_NAME, location);
-        BasicNameValuePair imageData = new BasicNameValuePair(IMAGE_NAME, imagePath);
-        ArrayList nameValuePairs = new ArrayList<NameValuePair>();
-        nameValuePairs.add(locationData);
-        nameValuePairs.add(imageData);
+        ArrayList nameValuePairs = assembleParameters();
+        callback.onBeforeSend(nameValuePairs);
+
         Http.post(ENDPOINT, nameValuePairs, new Http.Callback() {
             @Override
             public void onSuccess(HttpResponse response) {
@@ -81,15 +78,14 @@ public class Post {
                 callback.onError(e);
             }
         });
+
         return true;
     }
 
     public Bitmap rotatedImageMap(int rotation) {
         Matrix matrix = new Matrix();
         matrix.postRotate(rotation);
-        Bitmap rotatedImageMap = Bitmap.createBitmap(imageMap, 0, 0,
-                imageMap.getWidth(), imageMap.getHeight(),
-                matrix, true);
+        Bitmap rotatedImageMap = Bitmap.createBitmap(imageMap, 0, 0, imageMap.getWidth(), imageMap.getHeight(), matrix, true);
 
         return rotatedImageMap;
     }
@@ -109,7 +105,18 @@ public class Post {
         return post;
     }
 
+    public ArrayList<NameValuePair> assembleParameters() {
+        String imagePath = saveImage();
+        ArrayList nameValuePairs = new ArrayList<NameValuePair>();
+        nameValuePairs.add(new BasicNameValuePair(LOCATION_NAME, location));
+        nameValuePairs.add(new BasicNameValuePair(IMAGE_NAME, imagePath));
+
+        return nameValuePairs;
+    }
+
     public static abstract class Callback {
+
+        public abstract void onBeforeSend(ArrayList<NameValuePair> nameValuePairs);
 
         public abstract void onSuccess(Post post);
 
