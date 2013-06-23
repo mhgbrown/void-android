@@ -1,13 +1,13 @@
 package io.morgan.Void;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.ImageFormat;
 import android.hardware.Camera;
-import android.hardware.Camera.ShutterCallback;
 import android.hardware.Camera.PictureCallback;
+import android.hardware.Camera.ShutterCallback;
 import android.location.Location;
 import android.os.Bundle;
-import android.app.Activity;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -15,11 +15,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class Stream extends Activity {
 
@@ -31,6 +33,7 @@ public class Stream extends Activity {
 
     int state = K_STATE_STREAM;
     int originalHeight;
+    ArrayList<Post> posts = new ArrayList<Post>();
 
     RelativeLayout actionBar;
     LinearLayout stream;
@@ -39,6 +42,7 @@ public class Stream extends Activity {
     SurfaceHolder previewHolder;
     Camera camera;
     TextView locationDisplay;
+    ListView postsList;
 
     Button enterTheVoid;
     Button takePicture;
@@ -59,6 +63,7 @@ public class Stream extends Activity {
         actionBar = (RelativeLayout) findViewById(R.id.action_bar);
         preview = (SurfaceView) findViewById(R.id.preview);
         locationDisplay = (TextView) findViewById(R.id.location_display);
+        postsList = (ListView) findViewById(R.id.posts);
 
         previewHolder = preview.getHolder();
         previewHolder.addCallback(surfaceCallback);
@@ -129,7 +134,7 @@ public class Stream extends Activity {
                 post.save(new Post.Callback(){
 
                     @Override
-                    public void onSuccess(Post p) {
+                    public void onSuccess(final Post p) {
                         stopAction.setVisibility(View.INVISIBLE);
                         takePicture.setVisibility(View.INVISIBLE);
                         preview.setVisibility(View.INVISIBLE);
@@ -147,21 +152,22 @@ public class Stream extends Activity {
                         Media.getImage(p.imageUrl, new Media.ImageCallback() {
                             @Override
                             public void onSuccess(Bitmap image) {
-                                Toast.makeText(Stream.this, "image received", Toast.LENGTH_LONG).show();
-//                                ImageView img = (ImageView) findViewById(R.id.imageView1);
-//                                img.setImageBitmap(image);
+                                p.imageMap = image;
+                                posts.add(0, p);
+                                PostAdapter adapter = new PostAdapter(Stream.this, R.layout.stream_post_view, posts.toArray(new Post[]{}));
+                                postsList.setAdapter(adapter);
                             }
 
                             @Override
                             public void onError(Exception e) {
-
+                                Toast.makeText(Stream.this, "Sorry, failed to get your image", Toast.LENGTH_LONG).show();
                             }
                         });
                     }
 
                     @Override
                     public void onError(Exception e) {
-                        Toast.makeText(Stream.this, "Sorry, please try again.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(Stream.this, "Sorry, please try again", Toast.LENGTH_LONG).show();
                         startPreview();
                         stopAction.setVisibility(View.VISIBLE);
                         takePicture.setVisibility(View.VISIBLE);

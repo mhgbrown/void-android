@@ -6,8 +6,6 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
 
-import org.apache.http.HttpResponse;
-
 import java.io.File;
 import java.net.URL;
 import java.text.SimpleDateFormat;

@@ -9,7 +9,7 @@
     <ListView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:id="@+id/listView"
+            android:id="@+id/posts"
             android:layout_gravity="left|center_vertical"
             android:layout_weight="1"/>
 
@@ -51,12 +51,12 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Somewhere"
                 android:id="@+id/location_display"
-                android:textColor="#CC0071"
                 android:textIsSelectable="false"
                 android:textStyle="bold"
                 android:visibility="invisible"
                 android:fontFamily="sans-serif-condensed"
-                android:enabled="true"/>
+                android:enabled="true"
+                android:textColor="#CC0071"/>
 
         <Button
                 android:layout_width="80dp"

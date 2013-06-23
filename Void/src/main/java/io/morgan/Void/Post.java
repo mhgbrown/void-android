@@ -1,5 +1,7 @@
 package io.morgan.Void;
 
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.util.Log;
 
 import org.apache.http.HttpResponse;
@@ -23,9 +25,10 @@ public class Post {
     public final String IMAGE_NAME = "post[image]";
 
     public int id = -1;
-    public String imageUrl = null;
     public String location = "Somewhere";
+    public String imageUrl = null;
     public byte[] image = new byte[1];
+    public Bitmap imageMap = null;
 
     public Post() {
         this.location = "Somewhere";
@@ -79,6 +82,16 @@ public class Post {
             }
         });
         return true;
+    }
+
+    public Bitmap rotatedImageMap(int rotation) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(rotation);
+        Bitmap rotatedImageMap = Bitmap.createBitmap(imageMap, 0, 0,
+                imageMap.getWidth(), imageMap.getHeight(),
+                matrix, true);
+
+        return rotatedImageMap;
     }
 
     public static Post fromJSON(String json) {
