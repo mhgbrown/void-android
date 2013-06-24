@@ -13,6 +13,19 @@
             android:layout_gravity="left|center_vertical"
             android:layout_weight="1"/>
 
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Your stream is empty.  Touch the triangle to fill it up."
+            android:id="@+id/empty_indicator"
+            android:textAlignment="center"
+            android:singleLine="false"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:visibility="invisible"
+            />
+
     <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="51dp"
@@ -31,7 +44,12 @@
                 android:visibility="invisible"
                 android:textStyle="bold"
                 android:singleLine="true"
-                android:layout_marginTop="3dp"/>
+                android:background="@drawable/button"
+                android:textColor="#FF3719"
+                android:textSize="40sp"
+                android:textAlignment="gravity"
+                android:gravity="center"
+                />
 
         <SurfaceView
                 android:layout_width="fill_parent"
@@ -67,7 +85,10 @@
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:textStyle="bold"
-                android:singleLine="true"/>
+                android:singleLine="true"
+                android:background="@drawable/button"
+                android:textColor="#08CC00"
+                android:textSize="35sp"/>
 
         <Button
                 android:layout_width="80dp"
@@ -78,7 +99,10 @@
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:singleLine="true"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:background="@drawable/button"
+                android:textColor="#D4BD15"
+                android:textSize="40sp"/>
 
         <Button
                 android:layout_width="80dp"
@@ -91,8 +115,11 @@
                 android:focusableInTouchMode="false"
                 android:layout_alignParentStart="false"
                 android:textStyle="bold"
-                android:singleLine="true"
+                android:singleLine="false"
                 android:visibility="visible"
+                android:textColor="#CC0071"
+                android:textSize="40sp"
+                android:textAlignment="viewStart"
                 />
 
     </RelativeLayout>

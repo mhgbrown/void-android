@@ -10,6 +10,11 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.apache.http.NameValuePair;
+
+import java.util.ArrayList;
 
 /**
  * Created by mobrown on 6/22/13.
@@ -18,9 +23,9 @@ public class PostAdapter extends ArrayAdapter<Post> {
 
     Context context;
     int layoutResourceId;
-    Post data[];
+    ArrayList<Post> data;
 
-    public PostAdapter(Context context, int layoutResourceId, Post[] data) {
+    public PostAdapter(Context context, int layoutResourceId, ArrayList<Post> data) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
         this.context = context;
@@ -30,7 +35,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
-        PostHolder holder = null;
+        final PostHolder holder;
 
         if(row == null)
         {
@@ -53,9 +58,30 @@ public class PostAdapter extends ArrayAdapter<Post> {
             holder = (PostHolder)row.getTag();
         }
 
-        Post post = data[position];
+        Post post = data.get(position);
         holder.postLocation.setText(post.location);
-        holder.postImage.setImageBitmap(post.rotatedImageMap(90));
+
+        if(post.imageMap == null) {
+            post.fetchImageMap(new Post.Callback() {
+                @Override
+                public void onBeforeSend(ArrayList<NameValuePair> nameValuePairs) {
+                    // nothing
+                }
+
+                @Override
+                public void onSuccess(Post post) {
+                    holder.postImage.setImageBitmap(post.rotatedImageMap(90));
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(context, "Sorry, failed to get an image", Toast.LENGTH_LONG).show();
+                }
+            });
+        } else {
+            holder.postImage.setImageBitmap(post.rotatedImageMap(90));
+        }
 
         return row;
     }

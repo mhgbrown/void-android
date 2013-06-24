@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * Created by mobrown on 6/23/13.
  */
 public class User {
-    public final String VOID_ID_NAME = "user[void_id]";
+    public static final String VOID_ID_NAME = "user[void_id]";
 
     public String voidId = null;
 

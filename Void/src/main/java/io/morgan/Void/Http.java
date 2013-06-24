@@ -1,12 +1,13 @@
 package io.morgan.Void;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
@@ -21,13 +22,63 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
 /**
  * Created by mobrown on 6/17/13.
  */
 public class Http {
+
+    public static void get(String url, final Callback callback) {
+
+        AsyncTask<String, Void, HttpResponse> get = new AsyncTask<String, Void, HttpResponse>() {
+            HttpClient httpClient = new DefaultHttpClient();
+
+            @Override
+            protected HttpResponse doInBackground(String... urls) {
+
+                try {
+                    String url = urls[0];
+                    URI website = null;
+
+                    website = new URI(url);
+                    HttpGet request = new HttpGet();
+                    request.setURI(website);
+                    HttpResponse response = httpClient.execute(request);
+                    return response;
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                    return null;
+                } catch (ClientProtocolException e) {
+                    e.printStackTrace();
+                    return null;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+
+            @Override
+            protected void onPostExecute(HttpResponse response) {
+                if(response == null) {
+                    callback.onError(new Exception("Response is null"));
+                    return;
+                }
+
+                if(response.getStatusLine().getStatusCode() < 200 || response.getStatusLine().getStatusCode() >= 300) {
+                    callback.onError(new Exception("Non-200 status"));
+                } else {
+                    callback.onSuccess(response);
+                }
+
+                httpClient.getConnectionManager().shutdown();
+            }
+        };
+
+        get.execute(url);
+    }
 
     public static void post(final String url, final List<NameValuePair> nameValuePairs, final Callback callback) {
 

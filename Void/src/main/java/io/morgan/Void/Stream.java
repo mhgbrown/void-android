@@ -1,7 +1,6 @@
 package io.morgan.Void;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
 import android.graphics.ImageFormat;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
@@ -21,8 +20,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Stream extends Activity {
@@ -45,6 +49,7 @@ public class Stream extends Activity {
     SurfaceHolder previewHolder;
     Camera camera;
     TextView locationDisplay;
+    TextView emptyIndicator;
     ListView postsList;
 
     Button enterTheVoid;
@@ -55,6 +60,7 @@ public class Stream extends Activity {
     Locator locator;
     Post post = null;
     User user = null;
+    PostAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +71,7 @@ public class Stream extends Activity {
         actionBar = (RelativeLayout) findViewById(R.id.action_bar);
         preview = (SurfaceView) findViewById(R.id.preview);
         locationDisplay = (TextView) findViewById(R.id.location_display);
+        emptyIndicator = (TextView) findViewById(R.id.empty_indicator);
         postsList = (ListView) findViewById(R.id.posts);
 
         previewHolder = preview.getHolder();
@@ -79,11 +86,16 @@ public class Stream extends Activity {
         locator = new Locator();
         user = new User(Identity.id(this));
 
+        adapter = new PostAdapter(Stream.this, R.layout.stream_post_view, new ArrayList<Post>());
+        adapter.setNotifyOnChange(true);
+        postsList.setAdapter(adapter);
+
         // attach main action handlers
         enterTheVoid.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
+                hideEmptyIndicator();
                 originalHeight = actionBar.getHeight();
                 Animation anim = Animator.expand(actionBar, stream.getHeight());
                 anim.setAnimationListener(new Animation.AnimationListener() {
@@ -156,25 +168,13 @@ public class Stream extends Activity {
                         post = null;
                         locationDisplay.setText(DEFAULT_LOCATION);
 
-                        if(p.imageUrl.contains("missing")) {
+                        if(p == null || p.imageUrl == null || p.imageUrl.contains("missing")) {
                             Toast.makeText(Stream.this, "No new images for you yet.  Please try again.", Toast.LENGTH_LONG).show();
                             return;
                         }
 
-                        Media.getImage(p.imageUrl, new Media.ImageCallback() {
-                            @Override
-                            public void onSuccess(Bitmap image) {
-                                p.imageMap = image;
-                                posts.add(0, p);
-                                PostAdapter adapter = new PostAdapter(Stream.this, R.layout.stream_post_view, posts.toArray(new Post[]{}));
-                                postsList.setAdapter(adapter);
-                            }
-
-                            @Override
-                            public void onError(Exception e) {
-                                Toast.makeText(Stream.this, "Sorry, failed to get your image", Toast.LENGTH_LONG).show();
-                            }
-                        });
+                        adapter.insert(p, 0);
+                        hideEmptyIndicator();
                     }
 
                     @Override
@@ -218,6 +218,47 @@ public class Stream extends Activity {
                         locationDisplay.setText(DEFAULT_LOCATION);
                         break;
                 }
+            }
+        });
+
+        initStream();
+    }
+
+    private void initStream() {
+        // this is probably not a good idea, but its important to live dangerously
+        // especially within an app that has no concern for your content anyways
+        String url = Post.ENDPOINT + "?" + User.VOID_ID_NAME + "=" + user.voidId;
+        Http.get(url, new Http.Callback() {
+
+            @Override
+            public void onSuccess(HttpResponse httpResponse) {
+                try {
+                    String json = Http.getContentString(httpResponse);
+                    JSONArray postsJson = new JSONArray(json);
+
+                    if(postsJson.length() == 0) {
+                        showEmptyIndicator();
+                        return;
+                    }
+
+                    for (int i = 0; i < postsJson.length(); i++) {
+                        JSONObject aPost = postsJson.getJSONObject(i);
+                        Post tmp = Post.fromJSON(aPost.toString());
+                        adapter.add(tmp);
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    onError(e);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    onError(e);
+                }
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Toast.makeText(Stream.this, "Sorry, couldn't get your stream", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -326,4 +367,14 @@ public class Stream extends Activity {
             }
         }
     };
+
+    public void showEmptyIndicator() {
+        emptyIndicator.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        emptyIndicator.setVisibility(View.VISIBLE);
+    }
+
+    public void hideEmptyIndicator() {
+        emptyIndicator.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, 0));
+        emptyIndicator.setVisibility(View.INVISIBLE);
+    }
 }

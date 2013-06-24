@@ -20,9 +20,9 @@ import java.util.ArrayList;
  * Created by mobrown on 6/17/13.
  */
 public class Post {
-    public final String ENDPOINT = "http://void-server.herokuapp.com/posts";
-    public final String LOCATION_NAME = "post[location]";
-    public final String IMAGE_NAME = "post[image]";
+    public static final String ENDPOINT = "http://void-server.herokuapp.com/posts";
+    public static final String LOCATION_NAME = "post[location]";
+    public static final String IMAGE_NAME = "post[image]";
 
     public int id = -1;
     public String location = "Somewhere";
@@ -112,6 +112,24 @@ public class Post {
         nameValuePairs.add(new BasicNameValuePair(IMAGE_NAME, imagePath));
 
         return nameValuePairs;
+    }
+
+    public void fetchImageMap(final Callback callback) {
+        if( imageUrl != null ) {
+            Media.getImage(imageUrl, new Media.ImageCallback() {
+                @Override
+                public void onSuccess(Bitmap image) {
+                    imageMap = image;
+                    callback.onSuccess(Post.this);
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    // I dunno
+                    callback.onError(e);
+                }
+            });
+        }
     }
 
     public static abstract class Callback {
