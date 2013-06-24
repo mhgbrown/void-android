@@ -137,7 +137,7 @@ public class Stream extends Activity {
 
                     @Override
                     public void onBeforeSend(ArrayList<NameValuePair> nameValuePairs) {
-                        Toast.makeText(Stream.this, "before sending!", Toast.LENGTH_LONG).show();
+                        nameValuePairs.addAll(user.assembleParameters());
                     }
 
                     @Override
@@ -155,6 +155,11 @@ public class Stream extends Activity {
                         state = K_STATE_STREAM;
                         post = null;
                         locationDisplay.setText(DEFAULT_LOCATION);
+
+                        if(p.imageUrl.contains("missing")) {
+                            Toast.makeText(Stream.this, "No new images for you yet.  Please try again.", Toast.LENGTH_LONG).show();
+                            return;
+                        }
 
                         Media.getImage(p.imageUrl, new Media.ImageCallback() {
                             @Override
