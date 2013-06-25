@@ -34,6 +34,7 @@ public class Http {
     public static void get(String url, final Callback callback) {
 
         AsyncTask<String, Void, HttpResponse> get = new AsyncTask<String, Void, HttpResponse>() {
+            Exception exception;
             HttpClient httpClient = new DefaultHttpClient();
 
             @Override
@@ -49,12 +50,15 @@ public class Http {
                     HttpResponse response = httpClient.execute(request);
                     return response;
                 } catch (URISyntaxException e) {
+                    exception = e;
                     e.printStackTrace();
                     return null;
                 } catch (ClientProtocolException e) {
+                    exception = e;
                     e.printStackTrace();
                     return null;
                 } catch (IOException e) {
+                    exception = e;
                     e.printStackTrace();
                     return null;
                 }
@@ -63,7 +67,7 @@ public class Http {
             @Override
             protected void onPostExecute(HttpResponse response) {
                 if(response == null) {
-                    callback.onError(new Exception("Response is null"));
+                    callback.onError(exception);
                     return;
                 }
 
@@ -83,6 +87,7 @@ public class Http {
     public static void post(final String url, final List<NameValuePair> nameValuePairs, final Callback callback) {
 
         AsyncTask<Void, Void, HttpResponse> post = new AsyncTask<Void, Void, HttpResponse>() {
+            Exception exception;
             HttpClient httpClient = new DefaultHttpClient();
             HttpContext localContext = new BasicHttpContext();
             HttpPost httpPost = new HttpPost(url);
@@ -108,6 +113,7 @@ public class Http {
                     HttpResponse response = httpClient.execute(httpPost, localContext);
                     return response;
                 } catch (IOException e) {
+                    exception = e;
                     e.printStackTrace();
                     return null;
                 }
@@ -116,7 +122,7 @@ public class Http {
             @Override
             protected void onPostExecute(HttpResponse response) {
                 if(response == null) {
-                    callback.onError(new Exception("Response is null"));
+                    callback.onError(exception);
                     return;
                 }
 

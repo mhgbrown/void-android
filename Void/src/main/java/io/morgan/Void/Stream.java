@@ -302,6 +302,7 @@ public class Stream extends Activity {
 
                 // set a camera format
                 parameters.setPictureFormat(ImageFormat.JPEG);
+                parameters.set("orientation", "portrait");
                 parameters.setRotation(90);
 
                 if (size != null) {

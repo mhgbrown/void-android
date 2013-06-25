@@ -6,8 +6,15 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.entity.BufferedHttpEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+
 import java.io.File;
-import java.net.URL;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -44,16 +51,24 @@ public class Media {
 
     public static void getImage(String url, final ImageCallback callback) {
         AsyncTask<String, Void, Bitmap> imageFetcher = new AsyncTask<String, Void, Bitmap>() {
+            Exception exception;
 
             @Override
             protected Bitmap doInBackground(String... urls) {
                 String imageUrl = urls[0];
                 Bitmap imageMap = null;
+                HttpGet httpRequest = new HttpGet(imageUrl);
+                HttpClient httpclient = new DefaultHttpClient();
 
                 try {
-                    imageMap = BitmapFactory.decodeStream(new URL(imageUrl).openConnection().getInputStream());
+                    HttpResponse response =  httpclient.execute(httpRequest);
+                    HttpEntity entity = response.getEntity();
+                    BufferedHttpEntity bufferedHttpEntity = new BufferedHttpEntity(entity);
+                    InputStream is = bufferedHttpEntity.getContent();
+                    imageMap = BitmapFactory.decodeStream(is);
                 }
                 catch (Exception e) {
+                    exception = e;
                     e.printStackTrace();
                     return null;
                 }
@@ -64,7 +79,7 @@ public class Media {
             @Override
             protected void onPostExecute(Bitmap image) {
                 if(image == null) {
-                    callback.onError(new Exception("image is null"));
+                    callback.onError(exception);
                     return;
                 }
 

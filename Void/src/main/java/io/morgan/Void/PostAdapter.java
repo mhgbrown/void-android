@@ -75,8 +75,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
 
                 @Override
                 public void onError(Exception e) {
-                    e.printStackTrace();
-                    Toast.makeText(context, "Sorry, failed to get an image", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "Sorry, failed to get one of your images", Toast.LENGTH_LONG).show();
                 }
             });
         } else {
