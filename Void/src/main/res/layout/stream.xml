@@ -11,7 +11,9 @@
             android:layout_height="fill_parent"
             android:id="@+id/posts"
             android:layout_gravity="left|center_vertical"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:fadingEdge="none"
+            android:fadingEdgeLength="0dp"/>
 
     <TextView
             android:layout_width="fill_parent"
@@ -119,7 +121,6 @@
                 android:visibility="visible"
                 android:textColor="#CC0071"
                 android:textSize="40sp"
-                android:textAlignment="viewStart"
                 />
 
     </RelativeLayout>
