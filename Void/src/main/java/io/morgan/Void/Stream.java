@@ -87,7 +87,6 @@ public class Stream extends Activity {
         user = new User(Identity.id(this));
 
         adapter = new PostAdapter(Stream.this, R.layout.stream_post_view, new ArrayList<Post>());
-        adapter.setNotifyOnChange(true);
         postsList.setAdapter(adapter);
 
         // attach main action handlers
@@ -174,6 +173,7 @@ public class Stream extends Activity {
                         }
 
                         adapter.insert(p, 0);
+                        adapter.notifyDataSetChanged();
                         hideEmptyIndicator();
                     }
 
@@ -246,6 +246,8 @@ public class Stream extends Activity {
                         Post tmp = Post.fromJSON(aPost.toString());
                         adapter.add(tmp);
                     }
+
+                    adapter.notifyDataSetChanged();
 
                 } catch (IOException e) {
                     e.printStackTrace();
