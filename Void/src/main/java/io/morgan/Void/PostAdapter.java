@@ -70,7 +70,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
 
                 @Override
                 public void onSuccess(Post post) {
-                    holder.postImage.setImageBitmap(post.rotatedImageMap(90));
+                    holder.postImage.setImageBitmap(post.imageMap);
                 }
 
                 @Override
@@ -79,7 +79,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
                 }
             });
         } else {
-            holder.postImage.setImageBitmap(post.rotatedImageMap(90));
+            holder.postImage.setImageBitmap(post.imageMap);
         }
 
         return row;
