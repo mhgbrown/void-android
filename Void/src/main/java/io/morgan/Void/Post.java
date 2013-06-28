@@ -1,7 +1,6 @@
 package io.morgan.Void;
 
 import android.graphics.Bitmap;
-import android.graphics.Matrix;
 import android.util.Log;
 
 import org.apache.http.HttpResponse;
@@ -80,14 +79,6 @@ public class Post {
         });
 
         return true;
-    }
-
-    public Bitmap rotatedImageMap(int rotation) {
-        Matrix matrix = new Matrix();
-        matrix.postRotate(rotation);
-        Bitmap rotatedImageMap = Bitmap.createBitmap(imageMap, 0, 0, imageMap.getWidth(), imageMap.getHeight(), matrix, true);
-
-        return rotatedImageMap;
     }
 
     public static Post fromJSON(String json) {

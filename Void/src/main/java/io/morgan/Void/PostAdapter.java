@@ -71,6 +71,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
                 @Override
                 public void onSuccess(Post post) {
                     holder.postImage.setImageBitmap(post.imageMap);
+                    PostAdapter.this.notifyDataSetChanged();
                 }
 
                 @Override
@@ -85,7 +86,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
         return row;
     }
 
-    public static class PostHolder {
+    static class PostHolder {
         ImageView postImage;
         TextView postLocation;
     }

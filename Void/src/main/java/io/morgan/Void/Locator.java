@@ -155,7 +155,9 @@ public class Locator {
             }
 
         } catch (IOException e) {
+            Toast.makeText(context, "Your location could not be determined", Toast.LENGTH_LONG).show();
             e.printStackTrace();
+
         }
 
         return result;
