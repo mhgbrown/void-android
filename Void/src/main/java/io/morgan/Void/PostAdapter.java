@@ -71,7 +71,6 @@ public class PostAdapter extends ArrayAdapter<Post> {
                 @Override
                 public void onSuccess(Post post) {
                     holder.postImage.setImageBitmap(post.imageMap);
-                    PostAdapter.this.notifyDataSetChanged();
                 }
 
                 @Override
