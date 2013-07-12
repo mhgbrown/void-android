@@ -19,7 +19,7 @@ import java.util.ArrayList;
  * Created by mobrown on 6/17/13.
  */
 public class Post {
-    public static final String ENDPOINT = "http://void-server.herokuapp.com/posts";
+    public static final String ENDPOINT = "http://void-server.herokuapp.com/users/USER_ID/posts";
     public static final String LOCATION_NAME = "post[location]";
     public static final String IMAGE_NAME = "post[image]";
 
@@ -55,9 +55,9 @@ public class Post {
 
     public boolean save(final Callback callback) {
         ArrayList nameValuePairs = assembleParameters();
-        callback.onBeforeSend(nameValuePairs);
+        String url = ENDPOINT.replace("USER_ID", User.current().id);
 
-        Http.post(ENDPOINT, nameValuePairs, new Http.Callback() {
+        Http.post(url, nameValuePairs, new Http.Callback() {
             @Override
             public void onSuccess(HttpResponse response) {
                 Post p = null;
@@ -124,8 +124,6 @@ public class Post {
     }
 
     public static abstract class Callback {
-
-        public abstract void onBeforeSend(ArrayList<NameValuePair> nameValuePairs);
 
         public abstract void onSuccess(Post post);
 

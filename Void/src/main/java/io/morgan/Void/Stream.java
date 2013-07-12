@@ -21,7 +21,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -59,7 +58,6 @@ public class Stream extends Activity {
 
     Locator locator;
     Post post = null;
-    User user = null;
     PostAdapter adapter;
 
     @Override
@@ -84,7 +82,6 @@ public class Stream extends Activity {
         stopAction = (Button) findViewById(R.id.stop_action);
 
         locator = new Locator();
-        user = new User(Identity.id(this));
 
         adapter = new PostAdapter(Stream.this, R.layout.stream_post_view, new ArrayList<Post>());
         postsList.setAdapter(adapter);
@@ -145,11 +142,6 @@ public class Stream extends Activity {
                 takePicture.setVisibility(View.INVISIBLE);
                 postButton.setVisibility(View.INVISIBLE);
                 post.save(new Post.Callback(){
-
-                    @Override
-                    public void onBeforeSend(ArrayList<NameValuePair> nameValuePairs) {
-                        nameValuePairs.addAll(user.assembleParameters());
-                    }
 
                     @Override
                     public void onSuccess(final Post p) {
@@ -227,7 +219,7 @@ public class Stream extends Activity {
     private void initStream() {
         // this is probably not a good idea, but its important to live dangerously
         // especially within an app that has no concern for your content anyways
-        String url = Post.ENDPOINT + "?" + User.VOID_ID_NAME + "=" + user.voidId;
+        String url = Post.ENDPOINT.replace("USER_ID", User.current().id);
         Http.get(url, new Http.Callback() {
 
             @Override

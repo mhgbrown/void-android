@@ -12,8 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.apache.http.NameValuePair;
-
 import java.util.ArrayList;
 
 /**
@@ -63,10 +61,6 @@ public class PostAdapter extends ArrayAdapter<Post> {
 
         if(post.imageMap == null) {
             post.fetchImageMap(new Post.Callback() {
-                @Override
-                public void onBeforeSend(ArrayList<NameValuePair> nameValuePairs) {
-                    // nothing
-                }
 
                 @Override
                 public void onSuccess(Post post) {

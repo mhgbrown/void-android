@@ -1,26 +1,44 @@
 package io.morgan.Void;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
+import android.content.Context;
+import android.content.SharedPreferences;
 
-import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * Created by mobrown on 6/23/13.
  */
 public class User {
-    public static final String VOID_ID_NAME = "user[void_id]";
+    private static final String VOID_ID = "VOID_ID";
 
-    public String voidId = null;
+    private static User current = null;
 
-    public User(String voidId) {
-        this.voidId = voidId;
+    public String id = null;
+
+    public synchronized static User current() {
+        if(current == null) {
+            current = new User();
+        }
+
+        return current;
     }
 
-    public ArrayList<NameValuePair> assembleParameters() {
-        ArrayList nameValuePairs = new ArrayList<NameValuePair>();
-        nameValuePairs.add(new BasicNameValuePair(VOID_ID_NAME, voidId));
+    private User() {
+        setId();
+    }
 
-        return nameValuePairs;
+    private void setId() {
+        Context context = App.getAppContext();
+
+        if (id == null) {
+            SharedPreferences sharedPrefs = context.getSharedPreferences(VOID_ID, Context.MODE_PRIVATE);
+            id = sharedPrefs.getString(VOID_ID, null);
+            if (id == null) {
+                id = UUID.randomUUID().toString();
+                SharedPreferences.Editor editor = sharedPrefs.edit();
+                editor.putString(VOID_ID, id);
+                editor.commit();
+            }
+        }
     }
 }
