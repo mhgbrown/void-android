@@ -6,7 +6,7 @@
         android:id="@+id/stream"
         android:focusable="true">
 
-    <ListView
+    <io.morgan.Void.PostListView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:id="@+id/posts"
@@ -76,7 +76,7 @@
                 android:visibility="invisible"
                 android:fontFamily="sans-serif-condensed"
                 android:enabled="true"
-                android:textColor="#CC0071"/>
+                android:textColor="#8200CA"/>
 
         <Button
                 android:layout_width="80dp"
@@ -103,7 +103,7 @@
                 android:singleLine="true"
                 android:textStyle="bold"
                 android:background="@drawable/button"
-                android:textColor="#D4BD15"
+                android:textColor="#F4D900"
                 android:textSize="40sp"/>
 
         <Button
@@ -119,7 +119,7 @@
                 android:textStyle="bold"
                 android:singleLine="false"
                 android:visibility="visible"
-                android:textColor="#CC0071"
+                android:textColor="#8200CA"
                 android:textSize="40sp"
                 />
 

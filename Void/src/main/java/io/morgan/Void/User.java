@@ -30,7 +30,7 @@ public class User {
     private void setId() {
         Context context = App.getAppContext();
 
-        if (id == null) {
+        if (id == null && context != null) {
             SharedPreferences sharedPrefs = context.getSharedPreferences(VOID_ID, Context.MODE_PRIVATE);
             id = sharedPrefs.getString(VOID_ID, null);
             if (id == null) {

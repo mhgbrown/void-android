@@ -56,7 +56,7 @@ public class Media {
             @Override
             protected Bitmap doInBackground(String... urls) {
                 String imageUrl = urls[0];
-                Bitmap imageMap = null;
+                Bitmap imageMap;
                 HttpGet httpRequest = new HttpGet(imageUrl);
                 HttpClient httpclient = new DefaultHttpClient();
 

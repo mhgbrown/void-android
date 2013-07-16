@@ -19,9 +19,9 @@ import java.util.ArrayList;
  */
 public class PostAdapter extends ArrayAdapter<Post> {
 
-    Context context;
-    int layoutResourceId;
-    ArrayList<Post> data;
+    public Context context;
+    public int layoutResourceId;
+    public ArrayList<Post> data;
 
     public PostAdapter(Context context, int layoutResourceId, ArrayList<Post> data) {
         super(context, layoutResourceId, data);
@@ -32,28 +32,27 @@ public class PostAdapter extends ArrayAdapter<Post> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View row = convertView;
         final PostHolder holder;
 
-        if(row == null)
+        if(convertView == null)
         {
             LayoutInflater inflater = ((Activity)context).getLayoutInflater();
-            row = inflater.inflate(layoutResourceId, parent, false);
+            convertView = inflater.inflate(layoutResourceId, parent, false);
 
             holder = new PostHolder();
-            holder.postImage = (ImageView)row.findViewById(R.id.post_image);
+            holder.postImage = (ImageView)convertView.findViewById(R.id.post_image);
 
             WindowManager wm = (WindowManager) parent.getContext().getSystemService(Context.WINDOW_SERVICE);
             Display display = wm.getDefaultDisplay();
 
             holder.postImage.getLayoutParams().height = display.getWidth();
-            holder.postLocation = (TextView)row.findViewById(R.id.post_location);
+            holder.postLocation = (TextView)convertView.findViewById(R.id.post_location);
 
-            row.setTag(holder);
+            convertView.setTag(holder);
         }
         else
         {
-            holder = (PostHolder)row.getTag();
+            holder = (PostHolder) convertView.getTag();
         }
 
         Post post = data.get(position);
@@ -76,7 +75,16 @@ public class PostAdapter extends ArrayAdapter<Post> {
             holder.postImage.setImageBitmap(post.imageMap);
         }
 
-        return row;
+        return convertView;
+    }
+
+    /**
+     * Remove the post at the given index
+     *
+     * @param index The index of the post to be removed
+     */
+    public void removeAt(int index) {
+        data.remove(index);
     }
 
     static class PostHolder {

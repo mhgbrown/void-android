@@ -42,7 +42,7 @@ public class Http {
 
                 try {
                     String url = urls[0];
-                    URI website = null;
+                    URI website;
 
                     website = new URI(url);
                     HttpGet request = new HttpGet();

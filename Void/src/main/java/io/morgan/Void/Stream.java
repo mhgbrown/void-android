@@ -15,18 +15,9 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.apache.http.HttpResponse;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.ArrayList;
 
 public class Stream extends Activity {
 
@@ -34,11 +25,8 @@ public class Stream extends Activity {
     final int K_STATE_PREVIEW = 1;
     final int K_STATE_FROZEN = 2;
 
-    final String DEFAULT_LOCATION = "Somewhere";
-
     int state = K_STATE_STREAM;
     int originalHeight;
-    ArrayList<Post> posts = new ArrayList<Post>();
     boolean cameraConfigured = false;
 
     RelativeLayout actionBar;
@@ -49,7 +37,7 @@ public class Stream extends Activity {
     Camera camera;
     TextView locationDisplay;
     TextView emptyIndicator;
-    ListView postsList;
+    PostListView postsList;
 
     Button enterTheVoid;
     Button takePicture;
@@ -58,7 +46,6 @@ public class Stream extends Activity {
 
     Locator locator;
     Post post = null;
-    PostAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +57,7 @@ public class Stream extends Activity {
         preview = (SurfaceView) findViewById(R.id.preview);
         locationDisplay = (TextView) findViewById(R.id.location_display);
         emptyIndicator = (TextView) findViewById(R.id.empty_indicator);
-        postsList = (ListView) findViewById(R.id.posts);
+        postsList = (PostListView) findViewById(R.id.posts);
 
         previewHolder = preview.getHolder();
         previewHolder.addCallback(surfaceCallback);
@@ -83,15 +70,12 @@ public class Stream extends Activity {
 
         locator = new Locator();
 
-        adapter = new PostAdapter(Stream.this, R.layout.stream_post_view, new ArrayList<Post>());
-        postsList.setAdapter(adapter);
-
         // attach main action handlers
         enterTheVoid.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                hideEmptyIndicator();
+//                hideEmptyIndicator();
                 originalHeight = actionBar.getHeight();
                 Animation anim = Animator.expand(actionBar, stream.getHeight());
                 anim.setAnimationListener(new Animation.AnimationListener() {
@@ -157,16 +141,16 @@ public class Stream extends Activity {
                         Animator.collapse(actionBar, originalHeight);
                         state = K_STATE_STREAM;
                         post = null;
-                        locationDisplay.setText(DEFAULT_LOCATION);
+                        locationDisplay.setText(Post.DEFAULT_LOCATION);
 
                         if(p == null || p.imageUrl == null || p.imageUrl.contains("missing")) {
                             Toast.makeText(Stream.this, "No new images for you yet.  Please try again.", Toast.LENGTH_LONG).show();
                             return;
                         }
 
-                        adapter.insert(p, 0);
-                        adapter.notifyDataSetChanged();
-                        hideEmptyIndicator();
+                        postsList.getAdapter().insert(p, 0);
+                        postsList.getAdapter().notifyDataSetChanged();
+//                        hideEmptyIndicator();
                     }
 
                     @Override
@@ -207,52 +191,9 @@ public class Stream extends Activity {
                         Animator.collapse(actionBar, originalHeight);
                         state = K_STATE_STREAM;
                         post = null;
-                        locationDisplay.setText(DEFAULT_LOCATION);
+                        locationDisplay.setText(Post.DEFAULT_LOCATION);
                         break;
                 }
-            }
-        });
-
-        initStream();
-    }
-
-    private void initStream() {
-        // this is probably not a good idea, but its important to live dangerously
-        // especially within an app that has no concern for your content anyways
-        String url = Post.ENDPOINT.replace("USER_ID", User.current().id);
-        Http.get(url, new Http.Callback() {
-
-            @Override
-            public void onSuccess(HttpResponse httpResponse) {
-                try {
-                    String json = Http.getContentString(httpResponse);
-                    JSONArray postsJson = new JSONArray(json);
-
-                    if(postsJson.length() == 0) {
-                        showEmptyIndicator();
-                        return;
-                    }
-
-                    for (int i = 0; i < postsJson.length(); i++) {
-                        JSONObject aPost = postsJson.getJSONObject(i);
-                        Post tmp = Post.fromJSON(aPost.toString());
-                        adapter.add(tmp);
-                    }
-
-                    adapter.notifyDataSetChanged();
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    onError(e);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    onError(e);
-                }
-            }
-
-            @Override
-            public void onError(Exception e) {
-                Toast.makeText(Stream.this, "Sorry, couldn't get your stream", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -363,13 +304,13 @@ public class Stream extends Activity {
         }
     };
 
-    public void showEmptyIndicator() {
-        emptyIndicator.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        emptyIndicator.setVisibility(View.VISIBLE);
-    }
+//    public void showEmptyIndicator() {
+//        emptyIndicator.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+//        emptyIndicator.setVisibility(View.VISIBLE);
+//    }
 
-    public void hideEmptyIndicator() {
-        emptyIndicator.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, 0));
-        emptyIndicator.setVisibility(View.INVISIBLE);
-    }
+//    public void hideEmptyIndicator() {
+//        emptyIndicator.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, 0));
+//        emptyIndicator.setVisibility(View.INVISIBLE);
+//    }
 }

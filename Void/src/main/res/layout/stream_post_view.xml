@@ -27,6 +27,6 @@
             android:background="@drawable/textlines"
             android:paddingBottom="20dp"
             android:layout_gravity="top"
-            android:textColor="#CC0071"
+            android:textColor="#8200CA"
             android:paddingLeft="10dp"/>
 </LinearLayout>

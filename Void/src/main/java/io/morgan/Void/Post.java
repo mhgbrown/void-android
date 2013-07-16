@@ -22,15 +22,16 @@ public class Post {
     public static final String ENDPOINT = "http://void-server.herokuapp.com/users/USER_ID/posts";
     public static final String LOCATION_NAME = "post[location]";
     public static final String IMAGE_NAME = "post[image]";
+    public static final String DEFAULT_LOCATION = "Somewhere";
 
+    public String location;
     public int id = -1;
-    public String location = "Somewhere";
     public String imageUrl = null;
     public byte[] image = new byte[1];
     public Bitmap imageMap = null;
 
     public Post() {
-        this.location = "Somewhere";
+        this.location = DEFAULT_LOCATION;
         this.image = new byte[1];
     }
 
@@ -53,7 +54,12 @@ public class Post {
         return outputFile.getAbsolutePath();
     }
 
-    public boolean save(final Callback callback) {
+    /**
+     * Save this post, persisting it's information from the server.
+     *
+     * @param callback
+     */
+    public void save(final Callback callback) {
         ArrayList nameValuePairs = assembleParameters();
         String url = ENDPOINT.replace("USER_ID", User.current().id);
 
@@ -77,8 +83,29 @@ public class Post {
                 callback.onError(e);
             }
         });
+    }
 
-        return true;
+    /**
+     * Destroy this post for the current user.
+     *
+     * @param callback
+     */
+    public void destroy(final Callback callback) {
+        ArrayList nameValuePairs = new ArrayList<NameValuePair>();
+        nameValuePairs.add(new BasicNameValuePair("_method", "delete"));
+        String url = ENDPOINT.replace("USER_ID", User.current().id) + "/" + id;
+        Http.post(url, nameValuePairs, new Http.Callback() {
+
+            @Override
+            public void onSuccess(HttpResponse httpResponse) {
+                callback.onSuccess(Post.this);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                callback.onError(e);
+            }
+        });
     }
 
     public static Post fromJSON(String json) {
