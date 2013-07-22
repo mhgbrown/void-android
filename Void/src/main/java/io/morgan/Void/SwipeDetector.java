@@ -5,6 +5,7 @@ package io.morgan.Void;
  *
  * @see http://stackoverflow.com/questions/4373485/android-swipe-on-list
  */
+
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -52,6 +53,7 @@ public class SwipeDetector implements View.OnTouchListener {
 
                 // horizontal swipe detection
                 if (Math.abs(deltaX) > HORIZONTAL_MIN_DISTANCE) {
+
                     // left or right
                     if (deltaX < 0) {
                         Log.i(logTag, "Swipe Left to Right");

@@ -86,7 +86,7 @@ public class PostListView extends ListView {
             if (swipeDetector.getAction() == SwipeDetector.Action.LR || swipeDetector.getAction() == SwipeDetector.Action.RL) {
                 AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
                 adb.setTitle("Remove?");
-                adb.setMessage("Are you sure you want to remove this post? You will not see it again.");
+                adb.setMessage("Are you sure you want to remove this post? You will never see it again.");
                 adb.setNegativeButton("Cancel", null);
                 adb.setPositiveButton("Ok", new DeletePostClickListener(position));
                 adb.show();

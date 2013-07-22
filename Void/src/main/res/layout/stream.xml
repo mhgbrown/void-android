@@ -35,10 +35,9 @@
             android:background="#000000"
             android:id="@+id/action_bar">
 
-        <Button
+        <ImageButton
                 android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:text="✕"
+                android:layout_height="50dp"
                 android:id="@+id/stop_action"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
@@ -46,12 +45,12 @@
                 android:visibility="invisible"
                 android:textStyle="bold"
                 android:singleLine="true"
-                android:background="@drawable/button"
                 android:textColor="#FF3719"
                 android:textSize="40sp"
-                android:textAlignment="gravity"
-                android:gravity="center"
-                />
+                android:src="@drawable/x_button"
+                android:scaleType="centerInside"
+                android:background="@drawable/button"
+                android:layout_marginLeft="-5dp"/>
 
         <SurfaceView
                 android:layout_width="fill_parent"
@@ -78,10 +77,9 @@
                 android:enabled="true"
                 android:textColor="#8200CA"/>
 
-        <Button
+        <ImageButton
                 android:layout_width="80dp"
                 android:layout_height="50dp"
-                android:text="✔"
                 android:id="@+id/post"
                 android:visibility="invisible"
                 android:layout_alignParentBottom="true"
@@ -89,27 +87,29 @@
                 android:textStyle="bold"
                 android:singleLine="true"
                 android:background="@drawable/button"
+                android:src="@drawable/check_button"
+                android:scaleType="centerInside"
                 android:textColor="#08CC00"
                 android:textSize="35sp"/>
 
-        <Button
+        <ImageButton
                 android:layout_width="80dp"
                 android:layout_height="50dp"
-                android:text="◎"
                 android:id="@+id/take_picture"
                 android:visibility="invisible"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:singleLine="true"
                 android:textStyle="bold"
-                android:background="@drawable/button"
                 android:textColor="#F4D900"
-                android:textSize="40sp"/>
+                android:textSize="40sp"
+                android:src="@drawable/camera_button"
+                android:scaleType="centerInside"
+                android:background="@drawable/button"/>
 
-        <Button
+        <ImageButton
                 android:layout_width="80dp"
                 android:layout_height="49dp"
-                android:text="▽"
                 android:id="@+id/enter_the_void"
                 android:layout_alignParentTop="false"
                 android:layout_centerHorizontal="true"
@@ -121,7 +121,9 @@
                 android:visibility="visible"
                 android:textColor="#8200CA"
                 android:textSize="40sp"
-                />
+                android:src="@drawable/void_button"
+                android:scaleType="centerInside"
+                android:background="@drawable/button"/>
 
     </RelativeLayout>
 

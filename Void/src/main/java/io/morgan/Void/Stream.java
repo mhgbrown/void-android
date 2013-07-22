@@ -13,7 +13,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -39,10 +39,10 @@ public class Stream extends Activity {
     TextView emptyIndicator;
     PostListView postsList;
 
-    Button enterTheVoid;
-    Button takePicture;
-    Button postButton;
-    Button stopAction;
+    ImageButton enterTheVoid;
+    ImageButton takePicture;
+    ImageButton postButton;
+    ImageButton stopAction;
 
     Locator locator;
     Post post = null;
@@ -63,10 +63,10 @@ public class Stream extends Activity {
         previewHolder.addCallback(surfaceCallback);
         previewHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
-        enterTheVoid = (Button) findViewById(R.id.enter_the_void);
-        takePicture = (Button) findViewById(R.id.take_picture);
-        postButton = (Button) findViewById(R.id.post);
-        stopAction = (Button) findViewById(R.id.stop_action);
+        enterTheVoid = (ImageButton) findViewById(R.id.enter_the_void);
+        takePicture = (ImageButton) findViewById(R.id.take_picture);
+        postButton = (ImageButton) findViewById(R.id.post);
+        stopAction = (ImageButton) findViewById(R.id.stop_action);
 
         locator = new Locator();
 
