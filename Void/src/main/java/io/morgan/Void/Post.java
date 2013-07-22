@@ -132,9 +132,9 @@ public class Post {
         return nameValuePairs;
     }
 
-    public void fetchImageMap(final Callback callback) {
+    public void fetchImageMap(int targetWidth, int targetHeight, final Callback callback) {
         if( imageUrl != null ) {
-            Media.getImage(imageUrl, new Media.ImageCallback() {
+            Media.getImage(imageUrl, targetWidth, targetHeight, new Media.ImageCallback() {
                 @Override
                 public void onSuccess(Bitmap image) {
                     imageMap = image;

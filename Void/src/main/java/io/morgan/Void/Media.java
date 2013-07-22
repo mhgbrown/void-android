@@ -14,6 +14,7 @@ import org.apache.http.entity.BufferedHttpEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -23,6 +24,8 @@ import java.util.Date;
  *
  * References:
  * http://developer.android.com/guide/topics/media/camera.html#saving-media
+ * http://stackoverflow.com/questions/924990/how-to-cache-inputstream-for-multiple-use
+ * http://stackoverflow.com/questions/477572/strange-out-of-memory-issue-while-loading-an-image-to-a-bitmap-object
  */
 public class Media {
 
@@ -49,9 +52,33 @@ public class Media {
         return mediaFile;
     }
 
-    public static void getImage(String url, final ImageCallback callback) {
+    public static void getImage(String url, final int targetWidth, final int targetHeight, final ImageCallback callback) {
         AsyncTask<String, Void, Bitmap> imageFetcher = new AsyncTask<String, Void, Bitmap>() {
             Exception exception;
+
+            private Bitmap decodeStream(InputStream inputStream) throws IOException {
+                Bitmap b;
+
+                //Decode image size
+                BitmapFactory.Options o = new BitmapFactory.Options();
+                o.inJustDecodeBounds = true;
+                BitmapFactory.decodeStream(inputStream, null, o);
+                inputStream.reset();
+
+                int scale = 1;
+                if (o.outHeight > targetHeight || o.outWidth > targetWidth) {
+                    scale = (int)Math.pow(2, (int) Math.round(Math.log(Math.max(targetHeight, targetWidth) /
+                            (double) Math.max(o.outHeight, o.outWidth)) / Math.log(0.5)));
+                }
+
+                //Decode with inSampleSize
+                BitmapFactory.Options o2 = new BitmapFactory.Options();
+                o2.inSampleSize = scale;
+                b = BitmapFactory.decodeStream(inputStream, null, o2);
+                inputStream.close();
+
+                return b;
+            }
 
             @Override
             protected Bitmap doInBackground(String... urls) {
@@ -65,7 +92,7 @@ public class Media {
                     HttpEntity entity = response.getEntity();
                     BufferedHttpEntity bufferedHttpEntity = new BufferedHttpEntity(entity);
                     InputStream is = bufferedHttpEntity.getContent();
-                    imageMap = BitmapFactory.decodeStream(is);
+                    imageMap = decodeStream(is);
                 }
                 catch (Exception e) {
                     exception = e;

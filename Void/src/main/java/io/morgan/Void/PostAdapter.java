@@ -59,7 +59,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
         holder.postLocation.setText(post.location);
 
         if(post.imageMap == null) {
-            post.fetchImageMap(new Post.Callback() {
+            post.fetchImageMap(holder.postImage.getLayoutParams().height, holder.postImage.getLayoutParams().height, new Post.Callback() {
 
                 @Override
                 public void onSuccess(Post post) {
