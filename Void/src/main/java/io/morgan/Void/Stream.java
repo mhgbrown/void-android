@@ -1,6 +1,10 @@
 package io.morgan.Void;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.ImageFormat;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
@@ -46,6 +50,9 @@ public class Stream extends Activity {
 
     Locator locator;
     Post post = null;
+
+    SharedPreferences preferences;
+    final String isNewUserPref = "NEW_USER";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -196,6 +203,25 @@ public class Stream extends Activity {
                 }
             }
         });
+
+        // determine if we should display the welcome dialog
+        preferences = App.getAppContext().getSharedPreferences(App.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+        Boolean isNewUser = preferences.getBoolean(isNewUserPref, false);
+        if (!isNewUser) {
+            AlertDialog.Builder adb = new AlertDialog.Builder(this);
+            adb.setTitle("Welcome");
+            adb.setMessage("Thanks for giving Void a go.\n\nYou've received a photo from a random user. Take and share photos using the purple triangle to receive more.\n\nSwipe left or right to remove a photo.\n\nEnjoy.");
+            adb.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+            adb.show();
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean(isNewUserPref, true);
+            editor.commit();
+        }
     }
 
     private Camera.Size getBestPreviewSize(int width, int height,

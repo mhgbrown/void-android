@@ -31,7 +31,7 @@ public class User {
         Context context = App.getAppContext();
 
         if (id == null && context != null) {
-            SharedPreferences sharedPrefs = context.getSharedPreferences(VOID_ID, Context.MODE_PRIVATE);
+            SharedPreferences sharedPrefs = context.getSharedPreferences(App.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
             id = sharedPrefs.getString(VOID_ID, null);
             if (id == null) {
                 id = UUID.randomUUID().toString();
