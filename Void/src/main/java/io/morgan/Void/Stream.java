@@ -329,14 +329,4 @@ public class Stream extends Activity {
             }
         }
     };
-
-//    public void showEmptyIndicator() {
-//        emptyIndicator.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-//        emptyIndicator.setVisibility(View.VISIBLE);
-//    }
-
-//    public void hideEmptyIndicator() {
-//        emptyIndicator.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, 0));
-//        emptyIndicator.setVisibility(View.INVISIBLE);
-//    }
 }
