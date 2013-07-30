@@ -157,7 +157,6 @@ public class Stream extends Activity {
 
                         postsList.getAdapter().insert(p, 0);
                         postsList.getAdapter().notifyDataSetChanged();
-//                        hideEmptyIndicator();
                     }
 
                     @Override
@@ -326,6 +325,8 @@ public class Stream extends Activity {
             if(cityAndCountry != null) {
                 locationDisplay.setText(cityAndCountry);
                 post.location = cityAndCountry;
+                post.latitude = location.getLatitude();
+                post.longitude = location.getLongitude();
             }
         }
     };

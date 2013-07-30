@@ -22,6 +22,8 @@ public class Post {
     public static final String ENDPOINT = "http://void-server.herokuapp.com/users/USER_ID/posts";
     public static final String LOCATION_NAME = "post[location]";
     public static final String IMAGE_NAME = "post[image]";
+    public static final String LATITUDE_NAME = "post[latitude]";
+    public static final String LONGITUDE_NAME = "post[longitude]";
     public static final String DEFAULT_LOCATION = "Somewhere";
 
     public String location;
@@ -29,6 +31,8 @@ public class Post {
     public String imageUrl = null;
     public byte[] image = new byte[1];
     public Bitmap imageMap = null;
+    public double latitude = 0;
+    public double longitude = 0;
 
     public Post() {
         this.location = DEFAULT_LOCATION;
@@ -128,6 +132,8 @@ public class Post {
         ArrayList nameValuePairs = new ArrayList<NameValuePair>();
         nameValuePairs.add(new BasicNameValuePair(LOCATION_NAME, location));
         nameValuePairs.add(new BasicNameValuePair(IMAGE_NAME, imagePath));
+        nameValuePairs.add(new BasicNameValuePair(LONGITUDE_NAME, String.valueOf(longitude)));
+        nameValuePairs.add(new BasicNameValuePair(LATITUDE_NAME, String.valueOf(latitude)));
 
         return nameValuePairs;
     }
