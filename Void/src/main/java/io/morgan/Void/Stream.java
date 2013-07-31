@@ -134,6 +134,7 @@ public class Stream extends Activity {
                         enterTheVoid.setVisibility(View.VISIBLE);
                         locationDisplay.setVisibility(View.INVISIBLE);
                         App.releaseCameraInstance();
+                        camera = null;
                         Animator.collapse(actionBar, originalHeight);
                         state = K_STATE_STREAM;
                         post = null;
@@ -180,6 +181,7 @@ public class Stream extends Activity {
                         enterTheVoid.setVisibility(View.VISIBLE);
                         locationDisplay.setVisibility(View.INVISIBLE);
                         App.releaseCameraInstance();
+                        camera = null;
                         Animator.collapse(actionBar, originalHeight);
                         state = K_STATE_STREAM;
                         post = null;
@@ -207,6 +209,13 @@ public class Stream extends Activity {
             editor.putBoolean(isNewUserPref, true);
             editor.commit();
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        App.releaseCameraInstance();
+        camera = null;
     }
 
     ShutterCallback shutterCallback = new ShutterCallback() {
