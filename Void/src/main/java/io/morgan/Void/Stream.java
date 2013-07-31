@@ -219,6 +219,17 @@ public class Stream extends Activity {
         camera = null;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(state == K_STATE_FROZEN) {
+            camera = App.getCameraInstance();
+            takePicture.setVisibility(View.VISIBLE);
+            postButton.setVisibility(View.INVISIBLE);
+            state = K_STATE_PREVIEW;
+        }
+    }
+
     Camera.AutoFocusCallback autoFocusCallback = new Camera.AutoFocusCallback() {
         @Override
         public void onAutoFocus(boolean success, Camera camera) {
