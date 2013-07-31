@@ -111,8 +111,7 @@ public class Stream extends Activity {
 
             @Override
             public void onClick(View v) {
-                camera.takePicture(shutterCallback, rawCallback, jpegCallback);
-                // change visibility in shutter callback
+                camera.autoFocus(autoFocusCallback);
             }
         });
 
@@ -217,6 +216,13 @@ public class Stream extends Activity {
         App.releaseCameraInstance();
         camera = null;
     }
+
+    Camera.AutoFocusCallback autoFocusCallback = new Camera.AutoFocusCallback() {
+        @Override
+        public void onAutoFocus(boolean success, Camera camera) {
+            camera.takePicture(shutterCallback, rawCallback, jpegCallback);
+        }
+    };
 
     ShutterCallback shutterCallback = new ShutterCallback() {
         public void onShutter() {
