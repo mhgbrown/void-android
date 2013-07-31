@@ -242,3 +242,13 @@ public class Stream extends Activity {
         }
     };
 }
+
+// TODO
+// See about reducing the quality of the photo before sending
+// Fix camera preview being squashed
+// Crash analytics
+// Save long and lat coordinates
+// Brandon's images
+// Farid's liking idea
+// See more about feedback
+//

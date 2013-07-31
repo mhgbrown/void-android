@@ -17,7 +17,7 @@
             android:paddingLeft="10dp"/>
 
     <TextView
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Somewhere"
@@ -26,7 +26,7 @@
             android:phoneNumber="false"
             android:background="@drawable/textlines"
             android:paddingBottom="20dp"
-            android:layout_gravity="top"
+            android:layout_gravity="center_horizontal|top"
             android:textColor="#8200CA"
-            android:paddingLeft="10dp"/>
+            />
 </LinearLayout>

@@ -30,7 +30,7 @@
 
     <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="51dp"
+            android:layout_height="60dp"
             android:layout_gravity="center"
             android:background="#000000"
             android:id="@+id/action_bar">
@@ -47,15 +47,16 @@
                 android:singleLine="true"
                 android:textColor="#FF3719"
                 android:textSize="40sp"
-                android:src="@drawable/x_button"
+                android:src="@drawable/x_button2"
                 android:scaleType="centerInside"
                 android:background="@drawable/button"
-                android:layout_marginLeft="-5dp"/>
+                android:padding="12.5dp"
+                android:layout_marginLeft="-6dp"/>
 
-        <SurfaceView
+        <io.morgan.Void.CameraPreview
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/preview"
+                android:id="@+id/camera_preview"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="false"
                 android:layout_alignParentLeft="false"
@@ -75,11 +76,13 @@
                 android:visibility="invisible"
                 android:fontFamily="sans-serif-condensed"
                 android:enabled="true"
-                android:textColor="#8200CA"/>
+                android:textColor="#8200CA"
+                android:textAlignment="center"
+                android:layout_centerHorizontal="true"/>
 
         <ImageButton
                 android:layout_width="80dp"
-                android:layout_height="50dp"
+                android:layout_height="60dp"
                 android:id="@+id/post"
                 android:visibility="invisible"
                 android:layout_alignParentBottom="true"
@@ -87,32 +90,34 @@
                 android:textStyle="bold"
                 android:singleLine="true"
                 android:background="@drawable/button"
-                android:src="@drawable/check_button"
+                android:src="@drawable/check_button2"
                 android:scaleType="centerInside"
                 android:textColor="#08CC00"
-                android:textSize="35sp"/>
+                android:textSize="35sp"
+                android:padding="5dp"/>
 
         <ImageButton
                 android:layout_width="80dp"
-                android:layout_height="50dp"
+                android:layout_height="60dp"
                 android:id="@+id/take_picture"
                 android:visibility="invisible"
                 android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
                 android:singleLine="true"
                 android:textStyle="bold"
                 android:textColor="#F4D900"
                 android:textSize="40sp"
-                android:src="@drawable/camera_button"
+                android:src="@drawable/camera_button2"
                 android:scaleType="centerInside"
-                android:background="@drawable/button"/>
+                android:background="@drawable/button"
+                android:layout_alignWithParentIfMissing="false"
+                android:layout_centerHorizontal="true"
+                android:padding="5dp"/>
 
         <ImageButton
                 android:layout_width="80dp"
-                android:layout_height="49dp"
+                android:layout_height="60dp"
                 android:id="@+id/enter_the_void"
                 android:layout_alignParentTop="false"
-                android:layout_centerHorizontal="true"
                 android:layout_alignParentBottom="true"
                 android:focusableInTouchMode="false"
                 android:layout_alignParentStart="false"
@@ -121,9 +126,11 @@
                 android:visibility="visible"
                 android:textColor="#8200CA"
                 android:textSize="40sp"
-                android:src="@drawable/void_button"
+                android:src="@drawable/void_button2"
                 android:scaleType="centerInside"
-                android:background="@drawable/button"/>
+                android:background="@drawable/button"
+                android:padding="5dp"
+                android:layout_centerHorizontal="true"/>
 
     </RelativeLayout>
 
