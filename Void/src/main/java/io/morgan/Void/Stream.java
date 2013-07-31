@@ -5,15 +5,11 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.graphics.ImageFormat;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
 import android.hardware.Camera.ShutterCallback;
 import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -31,13 +27,12 @@ public class Stream extends Activity {
 
     int state = K_STATE_STREAM;
     int originalHeight;
-    boolean cameraConfigured = false;
 
     RelativeLayout actionBar;
     LinearLayout stream;
 
-    SurfaceView preview;
-    SurfaceHolder previewHolder;
+    CameraPreview cameraPreview;
+
     Camera camera;
     TextView locationDisplay;
     TextView emptyIndicator;
@@ -61,14 +56,10 @@ public class Stream extends Activity {
 
         stream = (LinearLayout) findViewById(R.id.stream);
         actionBar = (RelativeLayout) findViewById(R.id.action_bar);
-        preview = (SurfaceView) findViewById(R.id.preview);
+        cameraPreview = (CameraPreview) findViewById(R.id.camera_preview);
         locationDisplay = (TextView) findViewById(R.id.location_display);
         emptyIndicator = (TextView) findViewById(R.id.empty_indicator);
         postsList = (PostListView) findViewById(R.id.posts);
-
-        previewHolder = preview.getHolder();
-        previewHolder.addCallback(surfaceCallback);
-        previewHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
         enterTheVoid = (ImageButton) findViewById(R.id.enter_the_void);
         takePicture = (ImageButton) findViewById(R.id.take_picture);
@@ -82,7 +73,6 @@ public class Stream extends Activity {
 
             @Override
             public void onClick(View v) {
-//                hideEmptyIndicator();
                 originalHeight = actionBar.getHeight();
                 Animation anim = Animator.expand(actionBar, stream.getHeight());
                 anim.setAnimationListener(new Animation.AnimationListener() {
@@ -94,20 +84,22 @@ public class Stream extends Activity {
                     @Override
                     public void onAnimationEnd(Animation arg0) {
                         post = new Post();
+
+                        cameraPreview.getLayoutParams().height = cameraPreview.getWidth();
+
+                        // move the location display down
+                        RelativeLayout.LayoutParams locationDisplayLayout = (RelativeLayout.LayoutParams)locationDisplay.getLayoutParams();
+                        locationDisplayLayout.setMargins(Animator.dpsToPixels(actionBar, 5), cameraPreview.getLayoutParams().height + ((ViewGroup.MarginLayoutParams) cameraPreview.getLayoutParams()).topMargin + Animator.dpsToPixels(actionBar, 5), 0, 0);
+                        locationDisplay.setLayoutParams(locationDisplayLayout);
+
                         stopAction.setVisibility(View.VISIBLE);
-                        preview.setVisibility(View.VISIBLE);
+                        cameraPreview.setVisibility(View.VISIBLE);
                         enterTheVoid.setVisibility(View.INVISIBLE);
                         takePicture.setVisibility(View.VISIBLE);
                         locationDisplay.setVisibility(View.VISIBLE);
-                        preview.getLayoutParams().height = preview.getWidth();
-                        // move the location display down
-                        RelativeLayout.LayoutParams locationDisplayLayout = (RelativeLayout.LayoutParams)locationDisplay.getLayoutParams();
-                        locationDisplayLayout.setMargins(Animator.dpsToPixels(actionBar, 5), preview.getLayoutParams().height + ((ViewGroup.MarginLayoutParams) preview.getLayoutParams()).topMargin + Animator.dpsToPixels(actionBar, 5), 0, 0);
-                        locationDisplay.setLayoutParams(locationDisplayLayout);
-                        camera = Camera.open();
-                        // this is weird and im not sure about it
-                        initPreview(preview.getWidth(), preview.getLayoutParams().height);
-                        startPreview();
+
+                        state = K_STATE_PREVIEW;
+                        camera = App.getCameraInstance();
 
                         locator.getLocation(Stream.this, locatorListener);
                     }
@@ -138,13 +130,10 @@ public class Stream extends Activity {
                     public void onSuccess(final Post p) {
                         stopAction.setVisibility(View.INVISIBLE);
                         takePicture.setVisibility(View.INVISIBLE);
-                        preview.setVisibility(View.INVISIBLE);
+                        cameraPreview.setVisibility(View.INVISIBLE);
                         enterTheVoid.setVisibility(View.VISIBLE);
                         locationDisplay.setVisibility(View.INVISIBLE);
-                        camera.stopPreview();
-                        camera.release();
-                        camera = null;
-                        cameraConfigured = false;
+                        App.releaseCameraInstance();
                         Animator.collapse(actionBar, originalHeight);
                         state = K_STATE_STREAM;
                         post = null;
@@ -162,7 +151,7 @@ public class Stream extends Activity {
                     @Override
                     public void onError(Exception e) {
                         Toast.makeText(Stream.this, "Sorry, please try again", Toast.LENGTH_LONG).show();
-                        startPreview();
+                        camera.startPreview();
                         stopAction.setVisibility(View.VISIBLE);
                         takePicture.setVisibility(View.VISIBLE);
                         postButton.setVisibility(View.INVISIBLE);
@@ -179,7 +168,7 @@ public class Stream extends Activity {
 
                 switch(state) {
                     case K_STATE_FROZEN:
-                        startPreview();
+                        camera.startPreview();
                         takePicture.setVisibility(View.VISIBLE);
                         postButton.setVisibility(View.INVISIBLE);
                         state = K_STATE_PREVIEW;
@@ -187,13 +176,10 @@ public class Stream extends Activity {
                     case K_STATE_PREVIEW:
                         stopAction.setVisibility(View.INVISIBLE);
                         takePicture.setVisibility(View.INVISIBLE);
-                        preview.setVisibility(View.INVISIBLE);
+                        cameraPreview.setVisibility(View.INVISIBLE);
                         enterTheVoid.setVisibility(View.VISIBLE);
                         locationDisplay.setVisibility(View.INVISIBLE);
-                        camera.stopPreview();
-                        camera.release();
-                        camera = null;
-                        cameraConfigured = false;
+                        App.releaseCameraInstance();
                         Animator.collapse(actionBar, originalHeight);
                         state = K_STATE_STREAM;
                         post = null;
@@ -222,81 +208,6 @@ public class Stream extends Activity {
             editor.commit();
         }
     }
-
-    private Camera.Size getBestPreviewSize(int width, int height,
-                                           Camera.Parameters parameters) {
-        Camera.Size result = null;
-
-        for (Camera.Size size : parameters.getSupportedPreviewSizes()) {
-            if (size.width <= width && size.height <= height) {
-                if (result == null) {
-                    result = size;
-                }
-                else {
-                    int resultArea = result.width * result.height;
-                    int newArea = size.width * size.height;
-
-                    if (newArea > resultArea) {
-                        result = size;
-                    }
-                }
-            }
-        }
-
-        return(result);
-    }
-
-    private void initPreview(int width, int height) {
-        if (camera != null && previewHolder.getSurface() != null) {
-            try {
-                camera.setPreviewDisplay(previewHolder);
-            }
-            catch (Throwable t) {
-                Log.e("PreviewDemo-surfaceCallback", "Exception in setPreviewDisplay()", t);
-                Toast.makeText(Stream.this, t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-
-            if (!cameraConfigured) {
-                Camera.Parameters parameters = camera.getParameters();
-                Camera.Size size = getBestPreviewSize(width, height, parameters);
-
-                // set a camera format
-                parameters.setPictureFormat(ImageFormat.JPEG);
-                parameters.set("orientation", "portrait");
-                parameters.setRotation(90);
-
-                if (size != null) {
-                    parameters.setPreviewSize(size.width, size.height);
-                    camera.setParameters(parameters);
-                    camera.setDisplayOrientation(90);
-                    cameraConfigured = true;
-                }
-            }
-        }
-    }
-
-    private void startPreview() {
-        if (cameraConfigured && camera != null) {
-            camera.startPreview();
-            state = K_STATE_PREVIEW;
-        }
-    }
-
-    SurfaceHolder.Callback surfaceCallback = new SurfaceHolder.Callback() {
-
-        public void surfaceCreated(SurfaceHolder holder) {
-            // no-op -- wait until surfaceChanged()
-        }
-
-        public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-            initPreview(width, height);
-            startPreview();
-        }
-
-        public void surfaceDestroyed(SurfaceHolder holder) {
-            // no-op
-        }
-    };
 
     ShutterCallback shutterCallback = new ShutterCallback() {
         public void onShutter() {
