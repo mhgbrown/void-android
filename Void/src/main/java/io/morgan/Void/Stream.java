@@ -111,6 +111,8 @@ public class Stream extends Activity {
 
             @Override
             public void onClick(View v) {
+                takePicture.setVisibility(View.INVISIBLE);
+                camera.cancelAutoFocus();
                 camera.autoFocus(autoFocusCallback);
             }
         });
@@ -259,7 +261,6 @@ public class Stream extends Activity {
 }
 
 // TODO
-// See about reducing the quality of the photo before sending
 // Fix camera preview being squashed
 // Crash analytics
 // Save long and lat coordinates
