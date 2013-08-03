@@ -6,7 +6,6 @@ package io.morgan.Void;
  * @see http://stackoverflow.com/questions/4373485/android-swipe-on-list
  */
 
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -56,12 +55,10 @@ public class SwipeDetector implements View.OnTouchListener {
 
                     // left or right
                     if (deltaX < 0) {
-                        Log.i(logTag, "Swipe Left to Right");
                         mSwipeDetected = Action.LR;
                         return true;
                     }
                     if (deltaX > 0) {
-                        Log.i(logTag, "Swipe Right to Left");
                         mSwipeDetected = Action.RL;
                         return true;
                     }
@@ -71,12 +68,10 @@ public class SwipeDetector implements View.OnTouchListener {
                     if (Math.abs(deltaY) > VERTICAL_MIN_DISTANCE) {
                         // top or down
                         if (deltaY < 0) {
-                            Log.i(logTag, "Swipe Top to Bottom");
                             mSwipeDetected = Action.TB;
                             return false;
                         }
                         if (deltaY > 0) {
-                            Log.i(logTag, "Swipe Bottom to Top");
                             mSwipeDetected = Action.BT;
                             return false;
                         }

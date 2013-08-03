@@ -9,7 +9,7 @@ buildscript {
 apply plugin: 'android'
 
 dependencies {
-    compile files('libs/android-support-v4.jar', 'libs/httpclient-4.2.5.jar', 'libs/httpmime-4.2.5.jar')
+    compile fileTree(dir: 'libs', include: '*.jar')
 }
 
 android {

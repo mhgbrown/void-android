@@ -19,6 +19,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.flurry.android.FlurryAgent;
+
 public class Stream extends Activity {
 
     final int K_STATE_STREAM = 0;
@@ -230,6 +232,20 @@ public class Stream extends Activity {
         }
     }
 
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+        FlurryAgent.onStartSession(this, getString(R.string.flurry_api_key));
+    }
+
+    @Override
+    protected void onStop()
+    {
+        super.onStop();
+        FlurryAgent.onEndSession(this);
+    }
+
     Camera.AutoFocusCallback autoFocusCallback = new Camera.AutoFocusCallback() {
         @Override
         public void onAutoFocus(boolean success, Camera camera) {
@@ -269,13 +285,21 @@ public class Stream extends Activity {
             }
         }
     };
+
 }
 
 // TODO
 // Fix camera preview being squashed
-// Crash analytics
-// Save long and lat coordinates
-// Brandon's images
+// Analytics
+// Loading animations
+// Don't save persist void photos to storage
 // Farid's liking idea
-// See more about feedback
-//
+// Don't restart the preview after leaving the app
+// list view caching/pagination?
+
+// so for likes
+// explore or exploit
+// take the ratio of likes / times a photo has been delivered
+// pick some threshold ratio over which photos will be eligibile to send out
+// 90% (or some other percent of the time) serve a random photo above that like threshold
+// 10% (or some other percent of the time) serve a random new or unsent out photo
