@@ -45,11 +45,14 @@ public class Media {
             }
         }
 
-        // Create a media file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        File mediaFile = new File(mediaStorageDir.getPath() + File.separator + "IMG_"+ timeStamp + ".jpg");
+        File mediaFile = new File(mediaStorageDir.getPath() + File.separator + createFilename());
 
         return mediaFile;
+    }
+
+    public static String createFilename() {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        return "IMG_"+ timeStamp + ".jpg";
     }
 
     public static void getImage(String url, final int targetWidth, final int targetHeight, final ImageCallback callback) {

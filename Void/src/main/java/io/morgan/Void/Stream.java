@@ -249,7 +249,7 @@ public class Stream extends Activity {
     Camera.AutoFocusCallback autoFocusCallback = new Camera.AutoFocusCallback() {
         @Override
         public void onAutoFocus(boolean success, Camera camera) {
-            camera.takePicture(shutterCallback, rawCallback, jpegCallback);
+            camera.takePicture(shutterCallback, null, jpegCallback);
         }
     };
 
@@ -258,11 +258,6 @@ public class Stream extends Activity {
             takePicture.setVisibility(View.INVISIBLE);
             postButton.setVisibility(View.VISIBLE);
             state = K_STATE_FROZEN;
-        }
-    };
-
-    PictureCallback rawCallback = new PictureCallback() {
-        public void onPictureTaken(byte[] data, Camera camera) {
         }
     };
 

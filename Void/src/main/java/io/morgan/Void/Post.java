@@ -31,6 +31,7 @@ public class Post {
     public String imageUrl = null;
     public byte[] image = new byte[1];
     public Bitmap imageMap = null;
+    public String imagePath = null;
     public double latitude = 0;
     public double longitude = 0;
 
@@ -66,20 +67,23 @@ public class Post {
     public void save(final Callback callback) {
         ArrayList nameValuePairs = assembleParameters();
         String url = ENDPOINT.replace("USER_ID", User.current().id);
+        final String imgPath = imagePath;
 
         Http.post(url, nameValuePairs, new Http.Callback() {
             @Override
             public void onSuccess(HttpResponse response) {
-                Post p = null;
+                Post post = null;
 
                 try {
-                    p = Post.fromJSON(Http.getContentString(response));
+                    post = Post.fromJSON(Http.getContentString(response));
+                    File file = new File(imgPath);
+                    file.delete();
                 } catch (IOException e) {
                     e.printStackTrace();
                     callback.onError(e);
                 }
 
-                callback.onSuccess(p);
+                callback.onSuccess(post);
             }
 
             @Override
@@ -120,6 +124,8 @@ public class Post {
             post.id = postJson.getInt("id");
             post.imageUrl = postJson.getString("image_url");
             post.location = postJson.getString("location");
+            post.latitude = postJson.getDouble("latitude");
+            post.longitude = postJson.getDouble("longitude");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -128,7 +134,7 @@ public class Post {
     }
 
     public ArrayList<NameValuePair> assembleParameters() {
-        String imagePath = saveImage();
+        imagePath = saveImage();
         ArrayList nameValuePairs = new ArrayList<NameValuePair>();
         nameValuePairs.add(new BasicNameValuePair(LOCATION_NAME, location));
         nameValuePairs.add(new BasicNameValuePair(IMAGE_NAME, imagePath));
