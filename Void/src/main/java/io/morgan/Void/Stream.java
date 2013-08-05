@@ -23,11 +23,11 @@ import com.flurry.android.FlurryAgent;
 
 public class Stream extends Activity {
 
-    final int K_STATE_STREAM = 0;
-    final int K_STATE_PREVIEW = 1;
-    final int K_STATE_FROZEN = 2;
+    public final int K_STATE_STREAM = 0;
+    public final int K_STATE_PREVIEW = 1;
+    public final int K_STATE_FROZEN = 2;
 
-    int state = K_STATE_STREAM;
+    public int state = K_STATE_STREAM;
     int originalHeight;
 
     RelativeLayout actionBar;
@@ -281,11 +281,19 @@ public class Stream extends Activity {
         }
     };
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+
+        if(hasFocus && postsList.contextMenuDisplayed) {
+            postsList.contextMenuDisplayed = false;
+            postsList.onContextMenuClosed(null);
+        }
+    }
 }
 
 // TODO
 // Fix camera preview being squashed
-// Analytics
 // Loading animations
 // Don't save persist void photos to storage
 // Farid's liking idea

@@ -2,6 +2,7 @@ package io.morgan.Void;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.AnimationDrawable;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
     public Context context;
     public int layoutResourceId;
     public ArrayList<Post> data;
+    public PostListView listView;
 
     public PostAdapter(Context context, int layoutResourceId, ArrayList<Post> data) {
         super(context, layoutResourceId, data);
@@ -59,6 +61,19 @@ public class PostAdapter extends ArrayAdapter<Post> {
         holder.postLocation.setText(post.location);
 
         if(post.imageMap == null) {
+            holder.postImage.post(new Runnable() {
+                @Override
+                public void run() {
+                    holder.postImage.setImageDrawable(context.getResources().getDrawable(R.drawable.loading));
+                    AnimationDrawable rocketAnimation = (AnimationDrawable) holder.postImage.getDrawable();
+                    holder.postImage.setVisibility(View.INVISIBLE);
+                    holder.postImage.setVisibility(View.VISIBLE);
+                    rocketAnimation.start();
+                    listView.scrollBy(0, 0);
+                }
+            });
+
+
             post.fetchImageMap(holder.postImage.getLayoutParams().height, holder.postImage.getLayoutParams().height, new Post.Callback() {
 
                 @Override
@@ -70,6 +85,9 @@ public class PostAdapter extends ArrayAdapter<Post> {
                 @Override
                 public void onError(Exception e) {
                     Toast.makeText(context, "Sorry, failed to get one of your images", Toast.LENGTH_LONG).show();
+                    // set post image to question mark or something
+                    // set location text to something like, tap to reload
+                    // implement the tap to reload
                 }
             });
         } else {
