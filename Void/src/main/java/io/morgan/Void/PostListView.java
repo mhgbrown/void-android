@@ -34,6 +34,10 @@ public class PostListView extends ListView {
     public final static int OPTION_LIKE = 1;
     public final static int OPTION_REMOVE = 2;
 
+    public final static String OPTION_LIKE_TEXT = "Like";
+    public final static String OPTION_UNLIKE_TEXT = "Unlike";
+    public final static String OPTION_REMOVE_TEXT = "Remove";
+
     public boolean contextMenuDisplayed = false;
 
     public PostListView(Context context, AttributeSet attributeSet) {
@@ -76,18 +80,52 @@ public class PostListView extends ListView {
 
     private void remove(final int itemPosition, final View listViewItem) {
         final PostAdapter adapter = getAdapter();
-        Post post = adapter.getItem(itemPosition);
+        final Post post = adapter.getItem(itemPosition);
+
+        // optimistically remove the post
+        adapter.removeAt(itemPosition);
+        adapter.notifyDataSetChanged();
+        listViewItem.setBackgroundResource(R.color.white);
+
         post.destroy(new Post.Callback() {
             @Override
             public void onSuccess(Post post) {
-                adapter.removeAt(itemPosition);
-                adapter.notifyDataSetChanged();
+                // great job
             }
 
             @Override
             public void onError(Exception e) {
-                Toast.makeText(getContext(), "Failed to delete, please try again.", Toast.LENGTH_LONG).show();
-                listViewItem.setBackgroundResource(R.color.white);
+                // hoping this works
+                adapter.insert(post, itemPosition);
+                adapter.notifyDataSetChanged();
+                Toast.makeText(getContext(), "Failed to remove, please try again.", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void likeOrUnlike(final int itemPosition, final View listViewItem) {
+        final PostAdapter adapter = getAdapter();
+        final Post post = adapter.getItem(itemPosition);
+
+        if(post.liked) {
+            listViewItem.findViewById(R.id.post_location).setBackgroundResource(R.color.DarkRed);
+        } else {
+            listViewItem.findViewById(R.id.post_location).setBackgroundResource(R.color.Coral);
+        }
+
+        post.likeOrUnlike(new Post.Callback() {
+            @Override
+            public void onSuccess(Post returnedPost) {
+                post.liked = returnedPost.liked;
+            }
+
+            @Override
+            public void onError(Exception e) {
+                // if the post was liked
+                    // add back the like indicator
+                    // give a message that the like failed
+                // else
+                    // just say that it failed to like
             }
         });
     }
@@ -191,9 +229,16 @@ public class PostListView extends ListView {
         public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
             MenuItem menuItem;
             itemLongClickListener.listViewItem.setBackgroundResource(R.color.black);
-            menuItem = contextMenu.add(Menu.NONE, OPTION_LIKE, 0, "Like");
+
+            Post post = getAdapter().getItem(itemLongClickListener.itemPosition);
+            if(post.liked) {
+                menuItem = contextMenu.add(Menu.NONE, OPTION_LIKE, 0, OPTION_UNLIKE_TEXT);
+            } else {
+                menuItem = contextMenu.add(Menu.NONE, OPTION_LIKE, 0, OPTION_LIKE_TEXT);
+            }
+
             menuItem.setOnMenuItemClickListener(new MenuItemClickListener());
-            menuItem = contextMenu.add(Menu.NONE, OPTION_REMOVE, 0, "Remove");
+            menuItem = contextMenu.add(Menu.NONE, OPTION_REMOVE, 0, OPTION_REMOVE_TEXT);
             menuItem.setOnMenuItemClickListener(new MenuItemClickListener());
             contextMenuDisplayed = true;
         }
@@ -203,10 +248,9 @@ public class PostListView extends ListView {
 
         @Override
         public boolean onMenuItemClick(MenuItem menuItem) {
-            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuItem.getMenuInfo();
-
             switch(menuItem.getItemId()) {
                 case OPTION_LIKE:
+                    likeOrUnlike(itemLongClickListener.itemPosition, itemLongClickListener.listViewItem);
                     break;
                 case OPTION_REMOVE:
                     removeDialog(itemLongClickListener.itemPosition, itemLongClickListener.listViewItem);

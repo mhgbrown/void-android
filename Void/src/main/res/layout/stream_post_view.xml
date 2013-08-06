@@ -4,7 +4,8 @@
               android:orientation="vertical"
               android:layout_width="fill_parent"
               android:layout_height="wrap_content"
-              android:background="@drawable/clear">
+              android:background="@drawable/clear"
+              android:descendantFocusability="blocksDescendants">
 
     <ImageView
             android:layout_width="fill_parent"
@@ -18,7 +19,7 @@
             />
 
     <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Somewhere"
@@ -26,8 +27,20 @@
             android:textStyle="bold"
             android:phoneNumber="false"
             android:background="@drawable/textlines"
-            android:paddingBottom="20dp"
             android:layout_gravity="center_horizontal|top"
             android:textColor="#8200CA"
-            />
+            android:gravity="center"/>
+
+    <ImageButton
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:id="@+id/like_button"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/void_vertical_white"
+            android:scaleType="centerInside"
+            android:background="@drawable/button"
+            android:padding="12.5dp"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:layout_marginTop="-75dp"/>
 </LinearLayout>

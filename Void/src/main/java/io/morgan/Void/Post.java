@@ -34,6 +34,7 @@ public class Post {
     public String imagePath = null;
     public double latitude = 0;
     public double longitude = 0;
+    public boolean liked = false;
 
     public Post() {
         this.location = DEFAULT_LOCATION;
@@ -116,6 +117,51 @@ public class Post {
         });
     }
 
+    public void likeOrUnlike(final Callback callback) {
+        if(liked) {
+            unlike(callback);
+        } else {
+            like(callback);
+        }
+    }
+
+    public void like(final Callback callback) {
+        String url = ENDPOINT.replace("USER_ID", User.current().id) + "/" + id + "/like";
+        Http.post(url, new ArrayList<NameValuePair>(), new Http.Callback(){
+
+            @Override
+            public void onSuccess(HttpResponse httpResponse) {
+                Post.this.liked = true;
+                callback.onSuccess(Post.this);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                callback.onError(e);
+            }
+        });
+    }
+
+    public void unlike(final Callback callback) {
+        String url = ENDPOINT.replace("USER_ID", User.current().id) + "/" + id + "/unlike";
+        ArrayList nameValuePairs = new ArrayList<NameValuePair>();
+        nameValuePairs.add(new BasicNameValuePair("_method", "delete"));
+
+        Http.post(url, nameValuePairs, new Http.Callback() {
+
+            @Override
+            public void onSuccess(HttpResponse httpResponse) {
+                Post.this.liked = false;
+                callback.onSuccess(Post.this);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                callback.onError(e);
+            }
+        });
+    }
+
     public static Post fromJSON(String json) {
         Post post = new Post();
 
@@ -124,8 +170,15 @@ public class Post {
             post.id = postJson.getInt("id");
             post.imageUrl = postJson.getString("image_url");
             post.location = postJson.getString("location");
-            post.latitude = postJson.getDouble("latitude");
-            post.longitude = postJson.getDouble("longitude");
+            post.liked = postJson.getBoolean("liked");
+
+            if(!postJson.isNull("latitude")) {
+                post.latitude = postJson.getDouble("latitude");
+            }
+
+            if(!postJson.isNull("longitude")) {
+                post.latitude = postJson.getDouble("longitude");
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

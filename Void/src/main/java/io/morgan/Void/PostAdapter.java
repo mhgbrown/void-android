@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,16 +25,20 @@ public class PostAdapter extends ArrayAdapter<Post> {
     public ArrayList<Post> data;
     public PostListView listView;
 
+    private LikeButtonListener likeButtonListener;
+
     public PostAdapter(Context context, int layoutResourceId, ArrayList<Post> data) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
         this.context = context;
         this.data = data;
+        likeButtonListener = new LikeButtonListener();
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final PostHolder holder;
+        Post post = data.get(position);
 
         if(convertView == null)
         {
@@ -49,6 +54,18 @@ public class PostAdapter extends ArrayAdapter<Post> {
             holder.postImage.getLayoutParams().height = display.getWidth();
             holder.postLocation = (TextView)convertView.findViewById(R.id.post_location);
 
+            holder.postLikeButton = (ImageButton)convertView.findViewById(R.id.like_button);
+            holder.postLikeButton.setOnClickListener(likeButtonListener);
+            holder.postLikeButton.setTag(position);
+
+            if(post.liked) {
+                holder.postLikeButton.setImageResource(R.drawable.void_vertical);
+                holder.postLikeButton.setAlpha(255);
+            } else {
+                holder.postLikeButton.setImageResource(R.drawable.void_vertical_white);
+                holder.postLikeButton.setAlpha(96);
+            }
+
             convertView.setTag(holder);
         }
         else
@@ -56,7 +73,6 @@ public class PostAdapter extends ArrayAdapter<Post> {
             holder = (PostHolder) convertView.getTag();
         }
 
-        Post post = data.get(position);
         holder.postLocation.setText(post.location);
 
         if(post.imageMap == null) {
@@ -71,7 +87,6 @@ public class PostAdapter extends ArrayAdapter<Post> {
 //                    listView.scrollBy(0, 0);
 //                }
 //            });
-
 
             post.fetchImageMap(holder.postImage.getLayoutParams().height, holder.postImage.getLayoutParams().height, new Post.Callback() {
 
@@ -105,7 +120,36 @@ public class PostAdapter extends ArrayAdapter<Post> {
         data.remove(index);
     }
 
+    private class LikeButtonListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+            ImageButton likeButton = (ImageButton) view;
+            final Post post = getItem((Integer)likeButton.getTag());
+
+            if(post.liked) {
+                likeButton.setImageResource(R.drawable.void_vertical_white);
+                likeButton.setAlpha(96);
+            } else {
+                likeButton.setImageResource(R.drawable.void_vertical);
+                likeButton.setAlpha(255);
+            }
+
+            post.likeOrUnlike(new Post.Callback() {
+                @Override
+                public void onSuccess(Post returnedPost) {
+                    post.liked = returnedPost.liked;
+                }
+
+                @Override
+                public void onError(Exception e) {
+                }
+            });
+        }
+    }
+
     static class PostHolder {
+        ImageButton postLikeButton;
         ImageView postImage;
         TextView postLocation;
     }
