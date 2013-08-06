@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.drawable.AnimationDrawable;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
 import android.hardware.Camera.ShutterCallback;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -45,6 +47,8 @@ public class Stream extends Activity {
     ImageButton postButton;
     ImageButton stopAction;
 
+    ImageView loadingIndicator;
+
     Locator locator;
     Post post = null;
 
@@ -67,6 +71,8 @@ public class Stream extends Activity {
         takePicture = (ImageButton) findViewById(R.id.take_picture);
         postButton = (ImageButton) findViewById(R.id.post);
         stopAction = (ImageButton) findViewById(R.id.stop_action);
+
+        loadingIndicator = (ImageView) findViewById(R.id.loading_indicator);
 
         locator = new Locator();
 
@@ -127,10 +133,12 @@ public class Stream extends Activity {
                 stopAction.setVisibility(View.INVISIBLE);
                 takePicture.setVisibility(View.INVISIBLE);
                 postButton.setVisibility(View.INVISIBLE);
+                startLoadingAnimation();
                 post.save(new Post.Callback(){
 
                     @Override
                     public void onSuccess(final Post p) {
+                        stopLoadingAnimation();
                         stopAction.setVisibility(View.INVISIBLE);
                         takePicture.setVisibility(View.INVISIBLE);
                         cameraPreview.setVisibility(View.INVISIBLE);
@@ -154,12 +162,12 @@ public class Stream extends Activity {
 
                     @Override
                     public void onError(Exception e) {
-                        Toast.makeText(Stream.this, "Sorry, please try again", Toast.LENGTH_LONG).show();
-                        camera.startPreview();
+                        stopLoadingAnimation();
                         stopAction.setVisibility(View.VISIBLE);
-                        takePicture.setVisibility(View.VISIBLE);
-                        postButton.setVisibility(View.INVISIBLE);
-                        state = K_STATE_PREVIEW;
+                        takePicture.setVisibility(View.INVISIBLE);
+                        postButton.setVisibility(View.VISIBLE);
+                        state = K_STATE_FROZEN;
+                        Toast.makeText(Stream.this, "Sorry, please try again", Toast.LENGTH_LONG).show();
                     }
                 });
             }
@@ -290,12 +298,33 @@ public class Stream extends Activity {
             postsList.onContextMenuClosed(null);
         }
     }
+
+    private void stopLoadingAnimation() {
+        loadingIndicator.setVisibility(View.INVISIBLE);
+        loadingIndicator.post(new Runnable() {
+            @Override
+            public void run() {
+                AnimationDrawable loadingAnimation = (AnimationDrawable) loadingIndicator.getBackground();
+                loadingAnimation.stop();
+            }
+        });
+    }
+
+    private void startLoadingAnimation() {
+        loadingIndicator.setVisibility(View.VISIBLE);
+        loadingIndicator.post(new Runnable() {
+            @Override
+            public void run() {
+                AnimationDrawable loadingAnimation = (AnimationDrawable) loadingIndicator.getBackground();
+                loadingAnimation.start();
+            }
+        });
+    }
 }
 
 // TODO
 // Fix camera preview being squashed
 // Loading animations
-// Don't save persist void photos to storage
 // Farid's liking idea
 // Don't restart the preview after leaving the app
 // list view caching/pagination?

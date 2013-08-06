@@ -48,7 +48,7 @@
                 android:singleLine="true"
                 android:textColor="#FF3719"
                 android:textSize="40sp"
-                android:src="@drawable/x_button2"
+                android:src="@drawable/x_button"
                 android:scaleType="centerInside"
                 android:background="@drawable/button"
                 android:padding="12.5dp"
@@ -91,7 +91,7 @@
                 android:textStyle="bold"
                 android:singleLine="true"
                 android:background="@drawable/button"
-                android:src="@drawable/check_button2"
+                android:src="@drawable/check_button"
                 android:scaleType="centerInside"
                 android:textColor="#08CC00"
                 android:textSize="35sp"
@@ -107,7 +107,7 @@
                 android:textStyle="bold"
                 android:textColor="#F4D900"
                 android:textSize="40sp"
-                android:src="@drawable/camera_button2"
+                android:src="@drawable/camera_button"
                 android:scaleType="centerInside"
                 android:background="@drawable/button"
                 android:layout_alignWithParentIfMissing="false"
@@ -127,11 +127,21 @@
                 android:visibility="visible"
                 android:textColor="#8200CA"
                 android:textSize="40sp"
-                android:src="@drawable/void_button2"
+                android:src="@drawable/void_button"
                 android:scaleType="centerInside"
                 android:background="@drawable/button"
                 android:padding="5dp"
                 android:layout_centerHorizontal="true"/>
+
+        <ImageView
+                android:layout_width="58dp"
+                android:layout_height="50dp"
+                android:id="@+id/loading_indicator"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/loading"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="5dp"
+                android:visibility="invisible"/>
 
     </RelativeLayout>
 

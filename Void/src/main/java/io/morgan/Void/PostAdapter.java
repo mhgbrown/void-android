@@ -2,7 +2,6 @@ package io.morgan.Void;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.drawable.AnimationDrawable;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,17 +60,17 @@ public class PostAdapter extends ArrayAdapter<Post> {
         holder.postLocation.setText(post.location);
 
         if(post.imageMap == null) {
-            holder.postImage.post(new Runnable() {
-                @Override
-                public void run() {
-                    holder.postImage.setImageDrawable(context.getResources().getDrawable(R.drawable.loading));
-                    AnimationDrawable rocketAnimation = (AnimationDrawable) holder.postImage.getDrawable();
-                    holder.postImage.setVisibility(View.INVISIBLE);
-                    holder.postImage.setVisibility(View.VISIBLE);
-                    rocketAnimation.start();
-                    listView.scrollBy(0, 0);
-                }
-            });
+//            holder.postImage.post(new Runnable() {
+//                @Override
+//                public void run() {
+//                    holder.postImage.setImageDrawable(context.getResources().getDrawable(R.drawable.loading));
+//                    AnimationDrawable rocketAnimation = (AnimationDrawable) holder.postImage.getDrawable();
+//                    holder.postImage.setVisibility(View.INVISIBLE);
+//                    holder.postImage.setVisibility(View.VISIBLE);
+//                    rocketAnimation.start();
+//                    listView.scrollBy(0, 0);
+//                }
+//            });
 
 
             post.fetchImageMap(holder.postImage.getLayoutParams().height, holder.postImage.getLayoutParams().height, new Post.Callback() {
