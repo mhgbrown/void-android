@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -106,27 +107,24 @@ public class PostListView extends ListView {
     private void likeOrUnlike(final int itemPosition, final View listViewItem) {
         final PostAdapter adapter = getAdapter();
         final Post post = adapter.getItem(itemPosition);
+        ImageButton likeButton = (ImageButton) listViewItem.findViewById(R.id.like_button);
 
         if(post.liked) {
-            listViewItem.findViewById(R.id.post_location).setBackgroundResource(R.color.DarkRed);
+            likeButton.setImageResource(R.drawable.heart_white);
+            likeButton.setAlpha(96);
         } else {
-            listViewItem.findViewById(R.id.post_location).setBackgroundResource(R.color.Coral);
+            likeButton.setImageResource(R.drawable.heart);
+            likeButton.setAlpha(255);
         }
 
         post.likeOrUnlike(new Post.Callback() {
             @Override
             public void onSuccess(Post returnedPost) {
-                post.liked = returnedPost.liked;
+                adapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onError(Exception e) {
-                // if the post was liked
-                    // add back the like indicator
-                    // give a message that the like failed
-                // else
-                    // just say that it failed to like
-            }
+            public void onError(Exception e) {}
         });
     }
 

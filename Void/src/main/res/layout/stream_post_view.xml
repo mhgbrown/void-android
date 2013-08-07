@@ -29,18 +29,19 @@
             android:background="@drawable/textlines"
             android:layout_gravity="center_horizontal|top"
             android:textColor="#8200CA"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:layout_marginBottom="20dp"/>
 
     <ImageButton
             android:layout_width="80dp"
             android:layout_height="50dp"
             android:id="@+id/like_button"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/void_vertical_white"
+            android:src="@drawable/heart_white"
             android:scaleType="centerInside"
             android:background="@drawable/button"
-            android:padding="12.5dp"
+            android:padding="10dp"
             android:focusable="false"
             android:focusableInTouchMode="false"
-            android:layout_marginTop="-75dp"/>
+            android:layout_marginTop="-98dp"/>
 </LinearLayout>

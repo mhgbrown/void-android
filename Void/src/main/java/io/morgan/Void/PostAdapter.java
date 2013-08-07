@@ -56,15 +56,6 @@ public class PostAdapter extends ArrayAdapter<Post> {
 
             holder.postLikeButton = (ImageButton)convertView.findViewById(R.id.like_button);
             holder.postLikeButton.setOnClickListener(likeButtonListener);
-            holder.postLikeButton.setTag(position);
-
-            if(post.liked) {
-                holder.postLikeButton.setImageResource(R.drawable.void_vertical);
-                holder.postLikeButton.setAlpha(255);
-            } else {
-                holder.postLikeButton.setImageResource(R.drawable.void_vertical_white);
-                holder.postLikeButton.setAlpha(96);
-            }
 
             convertView.setTag(holder);
         }
@@ -74,6 +65,15 @@ public class PostAdapter extends ArrayAdapter<Post> {
         }
 
         holder.postLocation.setText(post.location);
+
+        holder.postLikeButton.setTag(position);
+        if(post.liked) {
+            holder.postLikeButton.setImageResource(R.drawable.heart);
+            holder.postLikeButton.setAlpha(255);
+        } else {
+            holder.postLikeButton.setImageResource(R.drawable.heart_white);
+            holder.postLikeButton.setAlpha(96);
+        }
 
         if(post.imageMap == null) {
 //            holder.postImage.post(new Runnable() {
@@ -128,22 +128,21 @@ public class PostAdapter extends ArrayAdapter<Post> {
             final Post post = getItem((Integer)likeButton.getTag());
 
             if(post.liked) {
-                likeButton.setImageResource(R.drawable.void_vertical_white);
+                likeButton.setImageResource(R.drawable.heart_white);
                 likeButton.setAlpha(96);
             } else {
-                likeButton.setImageResource(R.drawable.void_vertical);
+                likeButton.setImageResource(R.drawable.heart);
                 likeButton.setAlpha(255);
             }
 
             post.likeOrUnlike(new Post.Callback() {
                 @Override
                 public void onSuccess(Post returnedPost) {
-                    post.liked = returnedPost.liked;
+                    notifyDataSetChanged();
                 }
 
                 @Override
-                public void onError(Exception e) {
-                }
+                public void onError(Exception e) {}
             });
         }
     }
