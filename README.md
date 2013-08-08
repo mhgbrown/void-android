@@ -1,7 +1,7 @@
 # Void Android
 ***Share anonymously, receive randomly***
 
-**[download the latest development version](https://www.dropbox.com/s/y4945hwxlrwvzrk/Void-debug-unaligned.apk)**
+**[Download on Google Play](https://play.google.com/store/apps/details?id=io.morgan.Void)**
 
 **[Found a problem? Have a suggestion? Create an issue!](https://github.com/discom4rt/void-android/issues)**
 
