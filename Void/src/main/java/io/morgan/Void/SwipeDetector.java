@@ -19,7 +19,6 @@ public class SwipeDetector implements View.OnTouchListener {
         None // when no action was detected
     }
 
-    private static final String logTag = "SwipeDetector";
     private static final int HORIZONTAL_MIN_DISTANCE = 80;
     private static final int VERTICAL_MIN_DISTANCE = 80;
     private float downX, downY, upX, upY;

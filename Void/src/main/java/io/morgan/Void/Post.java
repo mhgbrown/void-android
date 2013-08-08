@@ -1,7 +1,6 @@
 package io.morgan.Void;
 
 import android.graphics.Bitmap;
-import android.util.Log;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -50,10 +49,8 @@ public class Post {
             output.write(image);
             output.close();
         } catch (FileNotFoundException e) {
-            Log.e("Void", "The specified image file could not be found");
             e.printStackTrace();
         } catch (IOException e) {
-            Log.e("Void", "The image file could not be saved");
             e.printStackTrace();
         }
 

@@ -208,7 +208,7 @@ public class Stream extends Activity {
         if (!isNewUser) {
             AlertDialog.Builder adb = new AlertDialog.Builder(this);
             adb.setTitle("Welcome");
-            adb.setMessage("Thanks for giving Void a go.\n\nYou've received a photo from a random user. Take and share photos using the purple triangle to receive more.\n\nSwipe left or right on a photo to remove it.\n\nEnjoy.");
+            adb.setMessage("This is Void.\n\nYou've received a photo from a random user. Take and share photos using the purple triangle to receive more.\n\nSwipe left or right on a photo to remove it.\n\nIf you like a photo, touch the heart to increase the chance it will be redistributed.\n\nEnjoy.");
             adb.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
