@@ -17,3 +17,7 @@ This is my first Android app initially developed during a 6 week Android develop
 ## Server
 
 Void is supported by [this server applicaiton](https://github.com/discom4rt/void-server).
+
+## License
+
+This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.
