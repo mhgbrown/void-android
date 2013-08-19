@@ -381,6 +381,6 @@ I've tweaked a couple small functional things with the app to make it a little m
 
 ## Week 12
 ## FINAL DELIVERABLES
-[Buisness Plan](https://docs.google.com/document/d/1x8HvxUu1u6RLO9G1TPI1WHIiDlxo7ZSXcEN7M0mXh7Y/edit?usp=sharing)
-[Video](http://www.youtube.com/watch?v=lMuTwL10RSA)
-[App Release](https://play.google.com/store/apps/details?id=io.morgan.Void&hl=en)
+* [Buisness Plan](https://docs.google.com/document/d/1x8HvxUu1u6RLO9G1TPI1WHIiDlxo7ZSXcEN7M0mXh7Y/edit?usp=sharing)
+* [Video](http://www.youtube.com/watch?v=lMuTwL10RSA)
+* [App Release](https://play.google.com/store/apps/details?id=io.morgan.Void&hl=en)
