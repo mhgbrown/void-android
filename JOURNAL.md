@@ -200,3 +200,187 @@ Since this is the final week, I will be focusing on cleaning up the app, funtion
 With the help of some friends, I have ironed out a few bugs with the backend and the front end. I fix a problem with the randomization algorithm that would return an offset outside of the bounds of the total number of available posts. I fix some bugs with loading photos on the phone and Exception detection and passing. There is still one bug that alludes me. Sometimes images ill show up in the wrong orientation in the feed...but it seems like only on some devices. This is something I want to fix! I didn't get a chance to improve the styling/iconography much since I've been pretty frustrated the process of doing that.
 
 The latest version of my app can be downloaded [here](https://www.dropbox.com/s/y4945hwxlrwvzrk/Void-debug-unaligned.apk).
+
+## Mini II
+## Week 7
+
+I was unable to attend this class meeting.
+
+## Week 8
+### Deliverables
+* IRB Completion Report
+* Research resources
+    * [http://en.wikipedia.org/wiki/Omegle](http://en.wikipedia.org/wiki/Omegle)
+    * [http://en.wikipedia.org/wiki/Chat_Roulette](http://en.wikipedia.org/wiki/Chat_Roulette)
+    * [http://en.wikipedia.org/wiki/Snap_Chat](http://en.wikipedia.org/wiki/Snap_Chat)
+    * [http://techcrunch.com/2013/03/18/rando/](http://techcrunch.com/2013/03/18/rando/)
+    * [http://www.ustwo.co.uk/blog/introducing-rando/](http://www.ustwo.co.uk/blog/introducing-rando/)
+    * [http://www.businessinsider.com/whisper-app-secrets-2013-5?op=1](http://www.businessinsider.com/whisper-app-secrets-2013-5?op=1)
+    * [http://www.huffingtonpost.com/2013/06/05/whisper-app-reveals-lgbt-_n_3389502.html](http://www.huffingtonpost.com/2013/06/05/whisper-app-reveals-lgbt-_n_3389502.html)
+    * [http://en.wikipedia.org/wiki/Tinychat](http://en.wikipedia.org/wiki/Tinychat)
+    * [http://en.wikipedia.org/wiki/Zumbl](http://en.wikipedia.org/wiki/Zumbl)
+    * [http://en.wikipedia.org/wiki/Text_roulette](http://en.wikipedia.org/wiki/Text_roulette)
+    * [http://techcrunch.com/2013/06/17/you-have-no-friends/](http://techcrunch.com/2013/06/17/you-have-no-friends/)
+
+### Status
+Working to catch up on deliverables assigned in the previous week as well as ones assigned for next week.
+There are also a few things that I want to do to improve my app for this week:
+* Improve RESTfulness of service communcation
+* Verify image orientation bug
+
+### Progress
+On the app side, I have managed to get a few cool things done. I have successfully made the server end points more restful, which helped to clean up some code a bit. I have also added the ability to delete photos from your stream. Photos that have been deleted will not reappear in your stream.
+
+In addition, I have been able to do some reasearch on applications that are similar to Void, like Rando, Snapchat, ChatRoulette etc.
+
+## Week 9
+### Deliverables
+* [Draft Business Evaluation](https://docs.google.com/document/d/1x8HvxUu1u6RLO9G1TPI1WHIiDlxo7ZSXcEN7M0mXh7Y/edit?usp=sharing)
+* Market Exploration
+* Android:
+    * 64% of global smartphone market as of March 2013
+    * "During the third quarter of 2012, Android's worldwide smartphone market share was 75%, with 750 million devices activated in total and 1.5 million activations per day."
+    * Of that market share ~98+% are using Android 2.2 or above. Void is designed for 2.2 and above.
+    * Seems like conflicting reports, but, it's definitely up there.
+    * Android's market share is huge and appears to be growing quite aggressively. A huge market is getting huger. However, not everyone will have
+    * http://en.wikipedia.org/wiki/Android_(operating_system)#Market_share_and_rate_of_adoption
+    * A very similar App, Rando, was downloaded 40,000 times a month after it was released with 600,000 photos uploaded.
+    * http://thenextweb.com/apps/2013/04/11/randos-randomized-photo-sharing-anti-social-network-launches-on-android/
+    * The app was only released in March, which might be contributing to my difficulty finding user base numbers for it.
+    * In any event, the idea seems viable
+* Ways to get to market
+    * Networks!
+    * Friends working at prominent tech companies who work on/pay attention to new apps tha are coming around
+* Values of Market Testing
+    * Nail down viability although somewhat proven with Rando
+    * The big thing to determine would be if people are motivated enough to send a photo into the void to get one back This is one of the biggest unknowns for the app. Just getting a photo back might not be enough.
+    * It would be interesting to explore a system of kudos or some sort of voting for media. I'm not sure how this would affect the posts, but the market might have some ideas. Some initial user testing would be good for this.
+    * Could discover if users would like to share other types of media or if theyd like to keep some of the media that they get/post. The point of the app is to no keep it, so probably would not make any changes in that regard.
+    * The rate of "abuse" would also be interesting to see. How many people are posting pornographic or inappropriate imagery? How much of a problem is this if you can delete a post? How do user's sentiments change when they see inappropriate content?
+    * Is there potential legal trouble with not tying a user to something identifiable (like an email)?
+* Name Motivation: Void
+    * I don't have any strong feelings that I should change the name.
+    * A Void is like an empty space that you can throw things in and not necessarily get things back; a user throws their content into the void, forever losing it
+    * Void is also the absence of type, identity, matter, etc. Every user is essentially "void" as their identity is completely irrelevant.
+    * The app leverages the idea of opening the void to send things into it with the black photo taking interface
+* Righteous Feature Set
+    * Sharing a photo and getting a random one back
+    * Deleting a photo
+    * Flagging a photo
+    * Expand media beyond photos. Asked some friends and they indicated that video might be cool. I was thinking text a la Whisper app might also be interesting...although might tie in a weird confessional aspect that I am not going for. Audio clips might also be an interesting thing.
+* What do I not know how to do?
+    * Scalability might be a little tricky if this thing gets all big. Handling media efficiently is difficult.
+
+### Status
+At the beginning of the week, I completed the ability to delete photos from the app. I have also been working on creating some sort of draft business plan to aggregate all this important information about market size, etc.
+Progress
+
+At the end of the 3rd week, I have managed to:
+* Flesh out research/information pertinent to the business plan
+* Plan the initial user test and survey
+* Improve the iconography within the app
+* Reduce the memory consumed by bitmaps to avoid out of memory errors
+* The iconography improvements really help bring a sense of polish to the app that was missing before. I am very happy I could get this accomplished.
+* The next thing I want to improve is the onboarding process, no matter how trivial it might turn out. Currently, there is none.
+
+## Week 10
+### Deliverables
+* Demo (Live)
+* [Draft Business Plan](https://docs.google.com/document/d/1x8HvxUu1u6RLO9G1TPI1WHIiDlxo7ZSXcEN7M0mXh7Y/edit?usp=sharing)
+* [ User Test Survey](https://docs.google.com/forms/d/1aasriQuquRbGkY_axKmjFSNbuLKwvtdfvhZmLAOOUjs/viewform) | [Responses](https://docs.google.com/spreadsheet/ccc?key=0AgYQh22MtQiQdFlPQ3djQW0zaVEtVTlGZ1U5VzE5b2c&usp=sharing)
+* Further research/considerations
+    * Based on the fact that "disclosure begets disclosure", Void is an attempt to motivate random users to share photos to receive photos.
+    * [Ref](http://books.google.com/books#v=onepage&q=disclosure begets disclosure&f=false?id=osTqcaiflJQC&pg=PA307&lpg=PA307&dq=disclosure+begets+disclosure&source=bl&ots=HISnx60Pf0&sig=zluG2fHbeYAjwSbOaBzC8SuoqFM&hl=en&sa=X&ei=6XrsUai7BqeYigLArYGAAg&ved=0CC0Q6AEwAA)
+    * [More](http://www.psychologytoday.com/blog/the-young-and-the-restless/201108/disclose-yourself-how-intimate-disclosure-fosters-attraction)
+* How would I make Void survive the long haul?
+    * Ultimately, it's going to need to make some money or generate some buzz around an entity that can then make some money
+    * If Void becomes some sort of wild success, it could open the doors for the creating company to leverage that network to gather income from a future app
+    * You could also have advertisers add random photos to the available streams, while somehow leveraging an enforcement that it is not too obvious or something.
+    * Again, users always have the ability to delete a photo from their stream
+    * Introducing new types of posts (video, text, etc) might keep attention
+    * Or an iPhone version
+    * Or a web version
+    * Turn into a big anonymous media company
+* What might be the business use of Void?
+    * An obvious use would be something like an internal photos sharing platform, something like what Yammer does for companies.
+    * Would be an interesting way to collect photos from within a company. It might feel a little more relevant since it's all occuring in a place that the user is familiar with.
+* Where else might the app be useful?
+    * The app might be useful if you could collect random photos from a specific area or event
+    * Then you could capture the whole experience of something without having to go all over the place
+    * Honestly, there is no utility in it...purposely. It's a fun experimental app
+* How is Void not going to be crowded out by other apps? How does void differentiate itself in the market?
+    * There is already one app, Rando, which does something very similar to Void, very well and there seems to be a lot of interest/buzz around it
+    * It was created by a game company in the Uk, so they already had some leverage in the market
+    * There is only one of these apps that I know of
+    * Rando requires an email and a password. Void was specifically designed to avoid thess things to lower the barrier to entry.
+    * Just take a freaking photo!
+    * It also makes things seem more anonymous - an email obviously identifies you
+    * One consideration is if/when users switch phones or use void on another device, how will they recover their stream?
+    * They will ask the app to tell them who they are, which will be some sort of weird string...or maybe like heroku, come up with some random, but memorable name.
+    * [With each step in the flow of using an application, there is a probability that users will drop off.](http://blog.mixpanel.com/2009/06/10/introduction-to-analytics-funnel-analysis/)
+    * The ability to trade photos with another user would be interesting.
+    * You might initiate a random trade, which pulls up a notification on the receivers device and prompts them to trade
+    * You might initiate a targeted trade with another user...but this sort of violates the anonymity thing, but only to the extend that you know the other persons username...but then you probably actually know the person too, so its null and void
+    * Rando forces you to take a photo before you receive one. Void could flip this. When a user first installs and opens the app, theyll get a random photo. The onboarding process could use this to prompt them to take another. It might also elicit more desire to share since "disclosure begets disclosure".
+    * Incorporate some sort of props system that increases the liklihood of good photos getting distributed
+    * [http://www.androidcentral.com/rando](http://www.androidcentral.com/rando)
+    * "The quality of the pictures I've received is about as poor as what I've sent. Almost like everyone's sending in crap, hoping to get a bit of skin in return."
+* How will you deal with inappropriate imagery?
+    * The reality is people are going to post inappropriate things
+    * Users already have the ability to delete posts. So, if they came across an inappropriate post, they could delete it
+    * It might also be useful to integrate some sort of flagging feature so that one might tag something as inappropriate
+    * Then users could opt in to inappropriate content via some sort of setting.
+    * There is definitely a potential for abuse; users might flag things as inappropriate that aren't actually...which could lead to normal photos not being distributed to users that have opted out of inappropriate things
+    * You could implement some sort of Human review process with mechanical turk or some such thing
+    * You might also come up with some algorithm to judge inappropriate posts based on the number of flags and whether that user was opted in to inappropriate content.
+    * When humans are involved it's going to be hard.
+    * Some companies have algorithms to detect inappropriate content - mostly for pornography by detecting lots of skin tones. Other inappropriate content would pass through this, violence, etc.
+    * What other righteous features might I include?
+    * Share your feed with others
+    * Exchange/trade photos between user's feeds
+    * Still must follow the photo for photo rule. Can't just add things arbitratily to other people's feeds.
+    * Be able to use Void in a web browser/mobile browser [Chrome on Android now supports WebRTC](http://www.thrupoint.com/2013/03/fusion-web-on-mobile-devices-android-webrtc-for-chrome/)
+    * Give kudos to things to get more things like it?
+    * I don't like this because it's not random. You can always delete a photo from your stream and get another one.
+    * A curated stream is an interesting problem though, I just don't think it has a place with Void.
+    * Take short videos
+    * Recover the identity of the user so they can move to other devices/platforms and retain their feed
+
+### Status
+By class time of the week I have done the following:
+* Created a user survey and elicited some responses to it
+* Accumulated a user base of 8
+* Improved the iconography of the application
+* Reduced the memory usage of photos in the stream
+* Fixed an issue with duplicate photos in the Stream
+* Finished a rough draft of my business plan
+* For the rest of the week, I plan to improve my draft business plan with the feed back that I got in class. In addition, I'd like to implement at least some of the improvements that have been suggested to me by my pilot user group. One big problem that I am seeing in detecting and logging errors on devices. It's going to be near impossible to fix the app's problems on different devices if I can't see how it's failing.
+
+### Progress
+I finished up week 4 by thinking about the things that I want to complete with my app before the final class. A few important things came to mind:
+* Improving the reliabiltity of the camera and picture taking interface
+* Feedback and experiences with other devices have revealed some problems
+* Fixing the aspect ratio of the camera preview
+* The 1:1 ratio appears sqaushed
+* A possible solution would be to use the 4:3 ratio and crop the preview and the resultant image
+* Tweaking the design based on feedback from a Designer (someone who was involved in G+'s redesigned profile)
+* Adding the ability to like photos along with some sort of algorithm to surfaced liked photos more often than not liked photos
+* Exploring list view pagination and caching.
+
+## Week 11
+### Deliverables
+* Presentation to Dean
+
+### Status
+A lot of my time has been spent cleaning up the app, mostly with small visual and or functional changes. I spent a lot of time reimplementing the camera preview and camera functions to properly manage and release camera resources. Next, I'd like to move on to getting the liking functionality going. I also plan on redistributing the app to some of my friends so they can put it through its paces again
+
+### Progress
+I spent an unfortunate amount of time trying to get a loading animation going for images in the stream and then ended up not using it because of memory concerns. That definitely sucked.
+
+I've tweaked a couple small functional things with the app to make it a little more user friendly. For example, istead of taking you back to the camera preview when an upload fails, I let you just resubmit the photo that you took. I've also completed the initial backend requirements to support liking of photos. This was very straightforward. Later, I began implementing liking on the Android client and got some basic communication going between it and the server, which helped me debug some server issues :)
+
+## Week 12
+## FINAL DELIVERABLES
+[Buisness Plan](https://docs.google.com/document/d/1x8HvxUu1u6RLO9G1TPI1WHIiDlxo7ZSXcEN7M0mXh7Y/edit?usp=sharing)
+[Video](http://www.youtube.com/watch?v=lMuTwL10RSA)
+[App Release](https://play.google.com/store/apps/details?id=io.morgan.Void&hl=en)

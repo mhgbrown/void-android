@@ -12,7 +12,7 @@ Void is an experimental media sharing platform in which all content is anonymize
 ## Development
 **[check out the development journal](https://github.com/discom4rt/void-android/blob/master/JOURNAL.md)**
 
-This is my first Android app initially developed during a 6 week Android development course at [Carnegie Mellon Silicon Valley](http://www.cmu.edu/silicon-valley/).  The course is designed to give students an opportunity to learn Android development while simultaneously encouraging them to explore unique interaction types.
+This is my first Android app initially developed during a 12 week Android product development course at [Carnegie Mellon Silicon Valley](http://www.cmu.edu/silicon-valley/).  The course is designed to give students an opportunity to learn Android development while simultaneously encouraging them to explore unique interaction types.
 
 ## Server
 
