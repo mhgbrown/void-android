@@ -79,15 +79,15 @@ Maybe there is a way to do this without needing a user to create an account? How
 Update: I think I'm going to go without a login. If a user want's to maintain his or her own stream on another device, they can ask the app for their identifying information. I want the barrier for entry to this app to be very low, thoughtless.
 
 ### Wireframes
-[Here](https://github.com/discom4rt/void-android/blob/master/doc/crude wireframes.pdf)
+[Here](https://github.com/mhgbrown/void-android/blob/master/doc/crude wireframes.pdf)
 
 The main idea is that we have a stream and a screen that can be activated to post things. The stream displays all the random media that you have received with location information. You can double tap the post to give kudos and swipe the media left or right to remove the post (with confirmation). Clicking on the inverted triangle opens the "posting area" where users have the option to take a photo or enter some text. The users location information will be displayed at the bottom left corner of the media that they post. Once a user confirms a post, there is some uploading progress indication and then they are taken back to the stream. The stream will somehow indicate that a new random post is available and the user will pull down the stream to get that post.
 
 ### Server
-I've created a basic splash page for now and hosted in on Heroku. It's [here](http://void-server.herokuapp.com/). [The server code is hosted on Github](https://github.com/discom4rt/void-server).
+I've created a basic splash page for now and hosted in on Heroku. It's [here](http://void-server.herokuapp.com/). [The server code is hosted on Github](https://github.com/mhgbrown/void-server).
 
 ### Client
-[The code is hosted on Github](https://github.com/discom4rt/void-android). I try to push at every point that I have made reasonable progress.
+[The code is hosted on Github](https://github.com/mhgbrown/void-android). I try to push at every point that I have made reasonable progress.
 
 ## Week 4
 ### Status
@@ -184,8 +184,8 @@ I've posted a video of me demoing the app, which can be found [here](http://www.
 ## Week 6
 ### Deliverables
 * Source Code
-    * [Server](https://github.com/discom4rt/void-server)
-    * [Android Client](https://github.com/discom4rt/void-android)
+    * [Server](https://github.com/mhgbrown/void-server)
+    * [Android Client](https://github.com/mhgbrown/void-android)
 * Poster
 * [Demo video](http://www.youtube.com/watch?v=zQQo_gvWBq8) (excuse the orientation)
 
